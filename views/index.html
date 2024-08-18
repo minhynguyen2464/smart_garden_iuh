@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Smart Garden Dashboard</title>
+		<!-- Bootstrap CSS -->
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+		/>
+		<!-- FontAwesome -->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+		/>
+		<!-- Custom CSS -->
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+	<body>
+		<!-- Navbar -->
+		<nav class="navbar navbar-expand-lg navbar-dark">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="#">Smart Garden IUH</a>
+				<button
+					class="navbar-toggler"
+					type="button"
+					data-bs-toggle="collapse"
+					data-bs-target="#navbarNav"
+					aria-controls="navbarNav"
+					aria-expanded="false"
+					aria-label="Toggle navigation"
+				>
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarNav">
+					<ul class="navbar-nav ms-auto">
+						<li class="nav-item">
+							<button id="toggleDarkMode" class="btn btn-dark">
+								Toggle Dark Mode
+							</button>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container py-4">
+			<h1 class="text-center mb-5 text-success">Smart Garden Dashboard</h1>
+			<!-- Sensor Cards -->
+			<div class="container mt-5 col-lg-8">
+				<div class="row mt-4 justify-content-center">
+					<!-- Soil Moisture -->
+					<div class="col-md-4 col-lg-4 mb-4">
+						<div class="card shadow-sm text-center">
+							<div class="card-body">
+								<i class="fas fa-seedling fa-2x mb-2"></i>
+								<h5 class="card-title">Soil Moisture</h5>
+								<span class="sensor-info">Last value Soil Moisture</span>
+								<p id="soilMoisture" class="sensor-value">Loading...</p>
+								<span class="sensor-info">2/6/18 2:51PM</span>
+							</div>
+						</div>
+					</div>
+
+					<!-- Temperature -->
+					<div class="col-md-4 col-lg-4 mb-4">
+						<div class="card shadow-sm text-center">
+							<div class="card-body">
+								<i class="fas fa-thermometer-half fa-2x mb-2"></i>
+								<h5 class="card-title">Temperature</h5>
+								<span class="sensor-info">Last value Temperature</span>
+								<p id="temperature" class="sensor-value">Loading...</p>
+								<span class="sensor-info">2/6/18 2:51PM</span>
+							</div>
+						</div>
+					</div>
+
+					<!-- Humidity -->
+					<div class="col-md-4 col-lg-4 mb-4">
+						<div class="card shadow-sm text-center">
+							<div class="card-body">
+								<i class="fas fa-tint fa-2x mb-2"></i>
+								<h5 class="card-title">Humidity</h5>
+								<span class="sensor-info">Last value Humidity</span>
+								<p id="humidity" class="sensor-value">Loading...</p>
+								<span class="sensor-info">2/6/18 2:51PM</span>
+							</div>
+						</div>
+					</div>
+
+					<!-- Light Level -->
+					<div class="col-md-4 col-lg-4 mb-4">
+						<div class="card shadow-sm text-center">
+							<div class="card-body">
+								<i class="fas fa-sun fa-2x mb-2"></i>
+								<h5 class="card-title">Light Level</h5>
+								<span class="sensor-info">Last value Light Level</span>
+								<p id="lightLevel" class="sensor-value">Loading...</p>
+								<span class="sensor-info">2/6/18 2:51PM</span>
+							</div>
+						</div>
+					</div>
+
+					<!-- Water Level -->
+					<div class="col-md-4 col-lg-4 mb-4">
+						<div class="card shadow-sm text-center">
+							<div class="card-body">
+								<i class="fas fa-bucket fa-2x mb-2"></i>
+								<h5 class="card-title">Water Level</h5>
+								<span class="sensor-info">Last value Water Level</span>
+								<p id="waterLevel" class="sensor-value">Loading...</p>
+								<span class="sensor-info">2/6/18 2:51PM</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4 col-lg-4 mb-4">
+						<div class="card shadow-sm text-center">
+							<div class="card-body">
+								<i class="fas fa-gears fa-2x mb-2"></i>
+								<h5 class="card-title">Care Mode</h5>
+								<p id="careMode" class="sensor-mode mt-4 mb-4">Automatic</p>
+								<span class="sensor-info">
+									<div class="d-flex justify-content-center align-items-center">
+										<button
+											type="button"
+											class="btn btn-success"
+											onclick="toggleCareMode()"
+										>
+											Toggle
+										</button>
+									</div>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Charts -->
+			<div class="row mt-4">
+				<div class="col-md-6">
+					<div class="chart-container">
+						<canvas id="temperatureChart"></canvas>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="chart-container">
+						<canvas id="humidityChart"></canvas>
+					</div>
+				</div>
+			</div>
+			<div class="row mt-4">
+				<div class="col-md-6">
+					<div class="chart-container">
+						<canvas id="soilMoistureChart"></canvas>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="chart-container">
+						<canvas id="lightLevelChart"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Scripts -->
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
+		<script src="js/script.js"></script>
+	</body>
+</html>

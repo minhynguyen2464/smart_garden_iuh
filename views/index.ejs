@@ -70,7 +70,9 @@
 								<i class="fas fa-thermometer-half fa-2x mb-2"></i>
 								<h5 class="card-title">Temperature</h5>
 								<span class="sensor-info">Last value Temperature</span>
-								<p id="temperature" class="sensor-value">Loading...</p>
+								<p id="temperature" class="sensor-value">
+									<%= sensor.temperature %>°C
+								</p>
 								<span class="sensor-info">2/6/18 2:51PM</span>
 							</div>
 						</div>
@@ -83,7 +85,9 @@
 								<i class="fas fa-tint fa-2x mb-2"></i>
 								<h5 class="card-title">Humidity</h5>
 								<span class="sensor-info">Last value Humidity</span>
-								<p id="humidity" class="sensor-value">Loading...</p>
+								<p id="humidity" class="sensor-value">
+									<%= sensor.humidity %>%
+								</p>
 								<span class="sensor-info">2/6/18 2:51PM</span>
 							</div>
 						</div>
@@ -166,9 +170,30 @@
 		</div>
 
 		<!-- Scripts -->
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
 		<script src="js/script.js"></script>
+		<script>
+			// Function to fetch sensor data and update the dashboard
+			function fetchSensorData() {
+				axios
+					.get('/sensor')
+					.then((response) => {
+						const sensorData = response.data;
+						document.getElementById('temperature').textContent =
+							sensorData.temperature + '°C';
+						document.getElementById('humidity').textContent =
+							sensorData.humidity + '%';
+					})
+					.catch((error) => {
+						console.error('Error fetching sensor data:', error);
+					});
+			}
+
+			// Fetch sensor data every 5 seconds
+			setInterval(fetchSensorData, 5000);
+		</script>
 	</body>
 </html>

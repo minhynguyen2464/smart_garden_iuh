@@ -1,11 +1,21 @@
 {
-  "name": "smart_garden_iuh",
-  "version": "1.0.0",
-  "description": "This is a capstone project for me",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC"
+	"name": "smart_garden_iuh",
+	"version": "1.0.0",
+	"description": "This is a capstone project for me",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "nodemon app.js"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"body-parser": "^1.20.2",
+		"ejs": "^3.1.10",
+		"express": "^4.19.2",
+		"firebase": "^10.13.0"
+	},
+	"devDependencies": {
+		"nodemon": "^3.1.4"
+	}
 }

@@ -163,12 +163,23 @@
 				</div>
 				<div class="col-md-6">
 					<div class="chart-container">
-						<canvas id="lightLevelChart"></canvas>
+						<canvas id="waterLevelChart"></canvas>
 					</div>
 				</div>
 			</div>
 		</div>
-
+		<!-- Footer -->
+		<footer
+			class="text-white text-center py-3 mt-5"
+			style="background-color: #4caf50"
+		>
+			<div class="container">
+				<p class="mb-0">© 2024 Smart Garden IUH. All rights reserved.</p>
+				<p class="mb-0">
+					Developed by <a href="#" class="text-white fw-bold">IUH</a>
+				</p>
+			</div>
+		</footer>
 		<!-- Scripts -->
 		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -182,10 +193,16 @@
 					.get('/sensor')
 					.then((response) => {
 						const sensorData = response.data;
+						const currentTime = new Date().toLocaleString(); // Get current date and time
+
 						document.getElementById('temperature').textContent =
 							sensorData.temperature + '°C';
 						document.getElementById('humidity').textContent =
 							sensorData.humidity + '%';
+						document.querySelector('#temperature + .sensor-info').textContent =
+							currentTime;
+						document.querySelector('#humidity + .sensor-info').textContent =
+							currentTime;
 					})
 					.catch((error) => {
 						console.error('Error fetching sensor data:', error);

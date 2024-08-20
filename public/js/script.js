@@ -16,7 +16,8 @@ document
 const ctxTemp = document.getElementById('temperatureChart').getContext('2d');
 const ctxHumidity = document.getElementById('humidityChart').getContext('2d');
 const ctxSoil = document.getElementById('soilMoistureChart').getContext('2d');
-const ctxLight = document.getElementById('lightLevelChart').getContext('2d');
+// const ctxLight = document.getElementById('lightLevelChart').getContext('2d');
+const ctxWater = document.getElementById('waterLevelChart').getContext('2d');
 
 const temperatureChart = new Chart(ctxTemp, {
 	type: 'line',
@@ -100,20 +101,47 @@ const soilMoistureChart = new Chart(ctxSoil, {
 	options: {},
 });
 
-const lightLevelChart = new Chart(ctxLight, {
-	type: 'line',
+// const lightLevelChart = new Chart(ctxLight, {
+// 	type: 'line',
+// 	data: {
+// 		labels: ['6 AM', '9 AM', '12 PM', '3 PM', '6 PM'],
+// 		datasets: [
+// 			{
+// 				label: 'Light Level (lx)',
+// 				data: [800, 1200, 1500, 1400, 1000],
+// 				borderColor: 'rgb(255, 205, 86)',
+// 				tension: 0.4,
+// 			},
+// 		],
+// 	},
+// 	options: {},
+// });
+
+const waterLevelChart = new Chart(ctxWater, {
+	type: 'doughnut',
 	data: {
-		labels: ['6 AM', '9 AM', '12 PM', '3 PM', '6 PM'],
+		labels: ['Water Level', 'Empty'],
 		datasets: [
 			{
-				label: 'Light Level (lx)',
-				data: [800, 1200, 1500, 1400, 1000],
-				borderColor: 'rgb(255, 205, 86)',
-				tension: 0.4,
+				label: 'Water Level (%)',
+				data: [75, 25], // Replace with dynamic data
+				backgroundColor: ['rgb(54, 162, 235)', 'rgb(235, 235, 235)'],
+				hoverOffset: 4,
 			},
 		],
 	},
-	options: {},
+	options: {
+		responsive: true,
+		plugins: {
+			tooltip: {
+				callbacks: {
+					label: function (context) {
+						return context.label + ': ' + context.raw + '%';
+					},
+				},
+			},
+		},
+	},
 });
 
 function toggleCareMode() {
@@ -126,8 +154,11 @@ function toggleCareMode() {
 		careModeElement.textContent = 'Automatic';
 	}
 }
-
+/*
 // Function to fetch sensor data and update the chart
+// Fetch and update chart data every 20 seconds
+// Initial fetch to populate the chart immediately
+*/
 function updateTemperatureChart() {
 	axios
 		.get('/sensor')
@@ -161,7 +192,11 @@ setInterval(updateTemperatureChart, 20000);
 // Initial fetch to populate the chart immediately
 updateTemperatureChart();
 
+/*
 // Function to fetch sensor data and update the humidity chart
+// Fetch and update chart data every 5 seconds
+// Initial fetch to populate the chart immediately
+*/
 function updateHumidityChart() {
 	axios
 		.get('/sensor')

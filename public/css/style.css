@@ -3,9 +3,22 @@ body {
 	color: #333;
 }
 
+/* Define the animation keyframes for the pop-up effect */
+@keyframes popup {
+	from {
+		transform: scale(0.2);
+		opacity: 0;
+	}
+	to {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
 .card {
 	border-radius: 15px;
 	height: 260px;
+	animation: popup 0.5s ease-out; /* Apply the animation */
 }
 
 .card h3 {

@@ -174,7 +174,7 @@ function updateTemperatureChart() {
 			temperatureChart.data.datasets[0].data.push(sensorData.temperature);
 
 			// Keep the chart's dataset length consistent (optional)
-			if (temperatureChart.data.labels.length > 5) {
+			if (temperatureChart.data.labels.length > 10) {
 				temperatureChart.data.labels.shift();
 				temperatureChart.data.datasets[0].data.shift();
 			}
@@ -212,7 +212,7 @@ function updateHumidityChart() {
 			humidityChart.data.datasets[0].data.push(sensorData.humidity);
 
 			// Keep the chart's dataset length consistent (optional)
-			if (humidityChart.data.labels.length > 5) {
+			if (humidityChart.data.labels.length > 10) {
 				humidityChart.data.labels.shift();
 				humidityChart.data.datasets[0].data.shift();
 			}

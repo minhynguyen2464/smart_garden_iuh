@@ -83,3 +83,16 @@ canvas {
 	font-size: 2rem; /* Bigger font size for the value */
 	font-weight: bold; /* Bold text for better readability */
 }
+
+.card-setting {
+	border-radius: 15px;
+	height: 200px;
+	animation: popup 0.5s ease-out; /* Apply the animation */
+}
+
+.card-text {
+	color: #4caf50;
+
+	font-size: 3rem; /* Increase font size */
+	font-weight: bold; /* Make text bold */
+}

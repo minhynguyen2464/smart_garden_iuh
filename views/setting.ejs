@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Smart Garden Dashboard</title>
+		<!-- Bootstrap CSS -->
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+		/>
+		<!-- FontAwesome -->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+		/>
+		<!-- Custom CSS -->
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+	<body>
+		<!-- Navbar -->
+		<nav class="navbar navbar-expand-lg navbar-dark">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="./">Smart Garden IUH</a>
+				<button
+					class="navbar-toggler"
+					type="button"
+					data-bs-toggle="collapse"
+					data-bs-target="#navbarNav"
+					aria-controls="navbarNav"
+					aria-expanded="false"
+					aria-label="Toggle navigation"
+				>
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarNav">
+					<ul class="navbar-nav ms-auto gap-3">
+						<li class="nav-item">
+							<button id="toggleDarkMode" class="btn btn-dark">
+								Dark mode
+							</button>
+						</li>
+						<li class="nav-item">
+							<button id="" class="btn btn-success">
+								<a href="./setting" style="color: white; text-decoration: none"
+									>Cài đặt</a
+								>
+							</button>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container py-4">
+			<h1 class="text-center mb-5 text-success">Smart Garden Settings</h1>
+			<div class="row justify-content-center">
+				<!-- Left Side: Form -->
+				<div class="col-lg-4">
+					<form action="/settings/save" method="POST">
+						<div class="row mb-3">
+							<div class="col-md-12">
+								<label for="temperatureThreshold" class="form-label"
+									>Nhiệt độ (°C)</label
+								>
+								<input
+									type="number"
+									step="0.1"
+									class="form-control"
+									id="temperatureThreshold"
+									name="temperatureThreshold"
+									placeholder="Nhập giá trị nhiệt độ tự động tưới"
+									required
+								/>
+							</div>
+						</div>
+						<div class="row mb-3">
+							<div class="col-md-12">
+								<label for="humidityThreshold" class="form-label"
+									>Độ ẩm không khí (%)</label
+								>
+								<input
+									type="number"
+									step="0.1"
+									class="form-control"
+									id="humidityThreshold"
+									name="humidityThreshold"
+									placeholder="Nhập giá trị độ ẩm tự động tưới"
+									required
+								/>
+							</div>
+						</div>
+						<div class="row mb-3">
+							<div class="col-md-12">
+								<label for="soilMoistureThreshold" class="form-label"
+									>Độ ẩm đất (%)</label
+								>
+								<input
+									type="number"
+									step="0.1"
+									class="form-control"
+									id="soilMoistureThreshold"
+									name="soilMoistureThreshold"
+									placeholder="Nhập giá trị độ ẩm đất tự động tưới"
+									required
+								/>
+							</div>
+						</div>
+
+						<div class="text-center">
+							<button type="submit" class="btn btn-success">Lưu cài đặt</button>
+						</div>
+					</form>
+				</div>
+
+				<!-- Right Side: Default Threshold Settings -->
+				<div class="col-lg-4">
+					<div class="row">
+						<h4 class="text-center" style="color: #4caf50">Giá trị mặc định</h4>
+						<div class="col-md-6 mb-3">
+							<div class="card" style="height: 200px">
+								<div class="card-body text-center">
+									<h4 class="card-title">Nhiệt độ</h4>
+									<i class="fas fa-thermometer-half fa-2x mb-2"></i>
+									<p class="card-text">30°C</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 mb-3">
+							<div class="card" style="height: 200px">
+								<div class="card-body text-center">
+									<h4 class="card-title">Độ ẩm</h4>
+									<i class="fas fa-tint fa-2x mb-2"></i>
+									<p class="card-text">42%</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 mb-3">
+							<div class="card" style="height: 200px">
+								<div class="card-body text-center">
+									<h4 class="card-title">Độ ẩm đất</h4>
+									<i class="fas fa-seedling fa-2x mb-2"></i>
+									<p class="card-text">52%</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 mb-3">
+							<div class="card" style="height: 200px">
+								<div class="card-body text-center">
+									<h4 class="card-title">Ánh sáng</h4>
+									<i class="fas fa-sun fa-2x mb-2"></i>
+									<p class="card-text">Sáng</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Footer -->
+		<footer
+			class="text-white text-center py-3 mt-5"
+			style="background-color: #4caf50"
+		>
+			<div class="container">
+				<p class="mb-0">© 2024 Smart Garden IUH. All rights reserved.</p>
+				<p class="mb-0">
+					Developed by <a href="#" class="text-white fw-bold">IUH</a>
+				</p>
+			</div>
+		</footer>
+		<!-- Scripts -->
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
+		<script src="js/script.js"></script>
+	</body>
+</html>

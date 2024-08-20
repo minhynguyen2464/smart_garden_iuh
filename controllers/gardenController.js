@@ -29,8 +29,18 @@ const createSensorData = async (req, res) => {
 	}
 };
 
+const getSensorSetting = async (req, res) => {
+	try {
+		const sensorData = await getSensorValues();
+		res.render('setting', { sensor: sensorData });
+	} catch (error) {
+		res.status(500).send(error.message);
+	}
+};
+
 module.exports = {
 	showSensorData,
 	createSensorData,
 	getSensorData,
+	getSensorSetting,
 };

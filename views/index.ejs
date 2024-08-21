@@ -64,8 +64,10 @@
 								<i class="fas fa-seedling fa-2x mb-2"></i>
 								<h5 class="card-title">Soil Moisture</h5>
 								<span class="sensor-info">Last value Soil Moisture</span>
-								<p id="soilMoisture" class="sensor-value">Loading...</p>
-								<span class="sensor-info">2/6/18 2:51PM</span>
+								<p id="soilMoisture" class="sensor-value">
+									<%= sensor.data.soilMoisture %>%
+								</p>
+								<span class="sensor-info"><%= sensor.timestamp %></span>
 							</div>
 						</div>
 					</div>
@@ -78,9 +80,9 @@
 								<h5 class="card-title">Temperature</h5>
 								<span class="sensor-info">Last value Temperature</span>
 								<p id="temperature" class="sensor-value">
-									<%= sensor.temperature %>°C
+									<%= sensor.data.temperature %>°C
 								</p>
-								<span class="sensor-info">2/6/18 2:51PM</span>
+								<span class="sensor-info"><%= sensor.timestamp %></span>
 							</div>
 						</div>
 					</div>
@@ -93,9 +95,9 @@
 								<h5 class="card-title">Humidity</h5>
 								<span class="sensor-info">Last value Humidity</span>
 								<p id="humidity" class="sensor-value">
-									<%= sensor.humidity %>%
+									<%= sensor.data.humidity %>%
 								</p>
-								<span class="sensor-info">2/6/18 2:51PM</span>
+								<span class="sensor-info"><%= sensor.timestamp %></span>
 							</div>
 						</div>
 					</div>
@@ -107,8 +109,10 @@
 								<i class="fas fa-sun fa-2x mb-2"></i>
 								<h5 class="card-title">Light Level</h5>
 								<span class="sensor-info">Last value Light Level</span>
-								<p id="lightLevel" class="sensor-value">Loading...</p>
-								<span class="sensor-info">2/6/18 2:51PM</span>
+								<p id="lightLevel" class="sensor-value">
+									<%= sensor.data.timeOfDay %>
+								</p>
+								<span class="sensor-info"><%= sensor.timestamp %></span>
 							</div>
 						</div>
 					</div>
@@ -121,7 +125,7 @@
 								<h5 class="card-title">Water Level</h5>
 								<span class="sensor-info">Last value Water Level</span>
 								<p id="waterLevel" class="sensor-value">Loading...</p>
-								<span class="sensor-info">2/6/18 2:51PM</span>
+								<span class="sensor-info"><%= sensor.timestamp %></span>
 							</div>
 						</div>
 					</div>
@@ -203,13 +207,13 @@
 						const currentTime = new Date().toLocaleString(); // Get current date and time
 
 						document.getElementById('temperature').textContent =
-							sensorData.temperature + '°C';
+							sensorData.data.temperature + '°C';
 						document.getElementById('humidity').textContent =
-							sensorData.humidity + '%';
+							sensorData.data.humidity + '%';
 						document.querySelector('#temperature + .sensor-info').textContent =
-							currentTime;
+							sensorData.timestamp;
 						document.querySelector('#humidity + .sensor-info').textContent =
-							currentTime;
+							sensorData.timestamp;
 					})
 					.catch((error) => {
 						console.error('Error fetching sensor data:', error);
@@ -217,7 +221,7 @@
 			}
 
 			// Fetch sensor data every 5 seconds
-			setInterval(fetchSensorData, 5000);
+			setInterval(fetchSensorData, 20000);
 		</script>
 	</body>
 </html>

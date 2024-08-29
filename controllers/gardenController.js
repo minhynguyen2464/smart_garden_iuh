@@ -2,6 +2,10 @@ const {
 	getSensorValues,
 	getLatestSensorData,
 	getLatest5SensorData,
+	getConfigValues,
+	updateAutoModeModel,
+	updateWaterPumpState,
+	updateFanState,
 } = require('../models/gardenModel');
 
 /*
@@ -13,6 +17,7 @@ const showSensorData = async (req, res) => {
 		// Format the timestamp
 		const formattedTimestamp = formatDate(sensorData.timestamp);
 		sensorData.timestamp = formattedTimestamp;
+		console.log(sensorData);
 		res.render('index', { sensor: sensorData });
 	} catch (error) {
 		res.status(500).send(error.message);
@@ -75,12 +80,66 @@ const get5SensorData = async (req, res) => {
 /*
 	This is setting page
 */
-const getSensorSetting = async (req, res) => {
+
+const getSmartGardenSettings = async (req, res) => {
 	try {
-		const sensorData = await getLatestSensorData();
-		res.render('setting', { sensor: sensorData });
+		const configValues = await getConfigValues();
+
+		const {
+			configTemp,
+			configHumid,
+			configMoisture,
+			autoMode,
+			fan,
+			waterPump,
+		} = configValues;
+
+		res.render('setting', {
+			temperatureThreshold: configTemp,
+			humidityThreshold: configHumid,
+			soilMoistureThreshold: configMoisture,
+			autoMode: autoMode,
+			fan: fan,
+			waterPump: waterPump,
+		});
 	} catch (error) {
-		res.status(500).send(error.message);
+		console.error('Error fetching config values from Firebase:', error);
+		res.status(500).send('Internal Server Error');
+	}
+};
+
+// Controller to handle the autoMode update
+const updateAutoMode = async (req, res) => {
+	try {
+		const { autoMode } = req.body;
+		const result = await updateAutoModeModel(autoMode);
+		res.status(200).json(result);
+	} catch (error) {
+		res.status(500).json({ success: false, message: error.message });
+	}
+};
+
+// Controller to handle updating the fan state
+const setFanState = async (req, res) => {
+	const { state } = req.body; // Expecting fanState to be sent in the request body
+
+	try {
+		const result = await updateFanState(state);
+		res.status(200).json(result);
+	} catch (error) {
+		res.status(500).json({ success: false, message: error.message });
+	}
+};
+
+const setWaterPumpState = async (req, res) => {
+	const { state } = req.body; // Expecting 'state' to be sent in the request body
+
+	try {
+		const result = await updateWaterPumpState(state);
+		res.status(200).json(result);
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ success: false, message: error.message });
 	}
 };
 
@@ -89,5 +148,8 @@ module.exports = {
 	showSensorData,
 	createSensorData,
 	getSensorData,
-	getSensorSetting,
+	getSmartGardenSettings,
+	updateAutoMode,
+	setFanState,
+	setWaterPumpState,
 };

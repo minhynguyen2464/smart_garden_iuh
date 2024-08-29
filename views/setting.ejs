@@ -57,99 +57,144 @@
 			<div class="row justify-content-center">
 				<!-- Left Side: Form -->
 				<div class="col-lg-4">
-					<form action="/settings/save" method="POST">
-						<div class="row mb-3">
-							<div class="col-md-12">
-								<label for="temperatureThreshold" class="form-label"
-									>Nhiệt độ (°C)</label
-								>
-								<input
-									type="number"
-									step="0.1"
-									class="form-control"
-									id="temperatureThreshold"
-									name="temperatureThreshold"
-									placeholder="Nhập giá trị nhiệt độ tự động tưới"
-									required
-								/>
+					<div class="card p-3" style="height: auto">
+						<form action="/settings/save" method="POST">
+							<div class="row mb-3">
+								<div class="col-md-12">
+									<label for="temperatureThreshold" class="form-label"
+										>Nhiệt độ (°C)</label
+									>
+									<input
+										type="number"
+										step="0.1"
+										class="form-control"
+										id="temperatureThreshold"
+										name="temperatureThreshold"
+										placeholder="Nhập giá trị nhiệt độ tự động tưới"
+										required
+									/>
+								</div>
 							</div>
-						</div>
-						<div class="row mb-3">
-							<div class="col-md-12">
-								<label for="humidityThreshold" class="form-label"
-									>Độ ẩm không khí (%)</label
-								>
-								<input
-									type="number"
-									step="0.1"
-									class="form-control"
-									id="humidityThreshold"
-									name="humidityThreshold"
-									placeholder="Nhập giá trị độ ẩm tự động tưới"
-									required
-								/>
+							<div class="row mb-3">
+								<div class="col-md-12">
+									<label for="humidityThreshold" class="form-label"
+										>Độ ẩm không khí (%)</label
+									>
+									<input
+										type="number"
+										step="0.1"
+										class="form-control"
+										id="humidityThreshold"
+										name="humidityThreshold"
+										placeholder="Nhập giá trị độ ẩm tự động tưới"
+										required
+									/>
+								</div>
 							</div>
-						</div>
-						<div class="row mb-3">
-							<div class="col-md-12">
-								<label for="soilMoistureThreshold" class="form-label"
-									>Độ ẩm đất (%)</label
-								>
-								<input
-									type="number"
-									step="0.1"
-									class="form-control"
-									id="soilMoistureThreshold"
-									name="soilMoistureThreshold"
-									placeholder="Nhập giá trị độ ẩm đất tự động tưới"
-									required
-								/>
+							<div class="row mb-3">
+								<div class="col-md-12">
+									<label for="soilMoistureThreshold" class="form-label"
+										>Độ ẩm đất (%)</label
+									>
+									<input
+										type="number"
+										step="0.1"
+										class="form-control"
+										id="soilMoistureThreshold"
+										name="soilMoistureThreshold"
+										placeholder="Nhập giá trị độ ẩm đất tự động tưới"
+										required
+									/>
+								</div>
 							</div>
-						</div>
 
-						<div class="text-center">
-							<button type="submit" class="btn btn-success">Lưu cài đặt</button>
-						</div>
-					</form>
+							<div class="text-center">
+								<button type="submit" class="btn btn-success">
+									Lưu cài đặt
+								</button>
+							</div>
+						</form>
+					</div>
 				</div>
-
+				<!-- Right Side: Default Threshold Settings -->
+				<div class="col-lg-1"></div>
 				<!-- Right Side: Default Threshold Settings -->
 				<div class="col-lg-4">
 					<div class="row">
-						<h4 class="text-center" style="color: #4caf50">Giá trị mặc định</h4>
-						<div class="col-md-6 mb-3">
-							<div class="card" style="height: 200px">
-								<div class="card-body text-center">
-									<h4 class="card-title">Nhiệt độ</h4>
-									<i class="fas fa-thermometer-half fa-2x mb-2"></i>
-									<p class="card-text">30°C</p>
+						<div class="col-lg-12 card p-3" style="height: auto">
+							<div class="row">
+								<h4 class="text-center" style="color: #4caf50">
+									Điều khiển thiết bị
+								</h4>
+								<div class="col-lg-12 d-flex justify-content-between">
+									<p class="mb-0">
+										<i class="fas fa-thermometer-half fa-2x m-2"></i>
+										<%= temperatureThreshold%>°C
+									</p>
+									<p class="mb-0">
+										<i class="fas fa-tint fa-2x m-2"></i>
+										<%= humidityThreshold %>%
+									</p>
+									<p class="mb-0">
+										<i class="fas fa-seedling fa-2x m-2"></i>
+										<%= soilMoistureThreshold %>%
+									</p>
 								</div>
 							</div>
-						</div>
-						<div class="col-md-6 mb-3">
-							<div class="card" style="height: 200px">
-								<div class="card-body text-center">
-									<h4 class="card-title">Độ ẩm</h4>
-									<i class="fas fa-tint fa-2x mb-2"></i>
-									<p class="card-text">42%</p>
+							<hr />
+
+							<div class="row">
+								<div class="col-lg-12 d-flex justify-content-between">
+									<h4 class="text-center" style="color: #4caf50">
+										Chăm sóc tự động
+									</h4>
+									<!-- Rounded switch -->
+									<label class="switch">
+										<input id="checkAuto" type="checkbox" <% if (autoMode === 1)
+										{ %> checked <% } %> />
+										<span class="slider round"></span>
+									</label>
+									<!-- Default text -->
 								</div>
 							</div>
-						</div>
-						<div class="col-md-6 mb-3">
-							<div class="card" style="height: 200px">
-								<div class="card-body text-center">
-									<h4 class="card-title">Độ ẩm đất</h4>
-									<i class="fas fa-seedling fa-2x mb-2"></i>
-									<p class="card-text">52%</p>
+
+							<hr />
+							<div class="row manual-setting">
+								<div class="col-lg-12 mb-2 mt-2 d-flex justify-content-between">
+									<h5 class="text-center m-2">
+										<i class="fa-solid fa-water"></i>
+										Trạng thái phun sương
+									</h5>
+									<button
+										id="waterBtn"
+										type="button"
+										class="btn btn-success"
+										data-toggle="button"
+									>
+										<% if (waterPump === 1) { %> On <% } else { %> Off <% } %>
+									</button>
+								</div>
+								<div class="col-lg-12 mb-2 mt-2 d-flex justify-content-between">
+									<h5 class="text-center m-2">
+										<i class="fa-solid fa-fan"></i>
+										Trạng thái quạt
+									</h5>
+									<button
+										id="fanBtn"
+										type="button"
+										class="btn btn-success"
+										data-toggle="button"
+									>
+										<% if (fan === 1) { %> On <% } else { %> Off <% } %>
+									</button>
 								</div>
 							</div>
-						</div>
-						<div class="col-md-6 mb-3">
-							<div class="card" style="height: 200px">
-								<div class="card-body text-center">
-									<h4 class="card-title">Ánh sáng</h4>
-									<i class="fas fa-sun fa-2x mb-2"></i>
-									<p class="card-text">Sáng</p>
+							<div class="row auto-setting">
+								<div class="col-xl-12 text-center">
+									<h4 style="color: #2e7d32">
+										CHẾ ĐỘ CHĂM SÓC TỰ ĐỘNG ĐANG BẬT
+										<i class="fa-solid fa-gears"></i>
+									</h4>
 								</div>
 							</div>
 						</div>
@@ -171,10 +216,11 @@
 			</div>
 		</footer>
 		<!-- Scripts -->
+
 		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
-		<script src="js/script.js"></script>
+		<script src="js/setting.js"></script>
 	</body>
 </html>

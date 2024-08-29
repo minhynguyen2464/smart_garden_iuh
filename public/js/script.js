@@ -1,10 +1,3 @@
-// Sample Data for Testing (replace with real-time data from your backend)
-// document.getElementById('soilMoisture').innerText = '45%';
-// document.getElementById('temperature').innerText = '24°C';
-// document.getElementById('humidity').innerText = '60%';
-// document.getElementById('lightLevel').innerText = 'Day';
-// document.getElementById('waterLevel').innerText = '75%'; // Water Level
-
 // Dark Mode Toggle
 document
 	.getElementById('toggleDarkMode')
@@ -16,9 +9,9 @@ document
 const ctxTemp = document.getElementById('temperatureChart').getContext('2d');
 const ctxHumidity = document.getElementById('humidityChart').getContext('2d');
 const ctxSoil = document.getElementById('soilMoistureChart').getContext('2d');
-// const ctxLight = document.getElementById('lightLevelChart').getContext('2d');
 const ctxWater = document.getElementById('waterLevelChart').getContext('2d');
 
+//Function này format thời gian cho chart
 function formatTime(timestamp) {
 	// Extract the time part from the timestamp
 	const timePart = timestamp.split(' ')[1]; // "17:18:0"
@@ -241,33 +234,6 @@ function toggleCareMode() {
 		careModeElement.textContent = 'Automatic';
 	}
 }
-/*
-// Function to fetch sensor data and update the chart
-// Fetch and update chart data every 20 seconds
-// Initial fetch to populate the chart immediately
-// */
-// function updateTemperatureChart() {
-// 	axios
-// 		.get('/chart')
-// 		.then((response) => {
-// 			const temperatures = response.data;
-
-// 			// Update the chart data
-// 			temperatureChart.data.labels = ['6 AM', '9 AM', '12 PM', '3 PM', '6 PM']; // Example labels
-// 			temperatureChart.data.datasets[0].data = temperatures;
-
-// 			// Re-render the chart
-// 			temperatureChart.update();
-// 		})
-// 		.catch((error) => {
-// 			console.error('Error fetching sensor data:', error);
-// 		});
-// }
-
-// // Fetch and update chart data every 20 seconds
-// setInterval(updateTemperatureChart, 20000);
-// Initial fetch to populate the chart immediately
-// updateTemperatureChart();
 
 const formatTimestamp = (timestamp) => {
 	// Split the timestamp into date and time parts
@@ -285,11 +251,19 @@ const formatTimestamp = (timestamp) => {
 // Fetch and update chart data every 5 seconds
 // Initial fetch to populate the chart immediately
 */
-function updateHumidityChart() {
+function updateChart() {
 	axios
 		.get('/sensor')
 		.then((response) => {
 			const sensorData = response.data;
+			// Calculate the empty percentage
+			const emptyLevel = 100 - sensorData.data.waterLevel;
+
+			// Update the chart data
+			waterLevelChart.data.datasets[0].data = [
+				sensorData.data.waterLevel,
+				emptyLevel,
+			];
 
 			// Add new data point to chart
 			humidityChart.data.labels.push(formatTimestamp(sensorData.timestamp));
@@ -318,6 +292,8 @@ function updateHumidityChart() {
 			humidityChart.update();
 			temperatureChart.update();
 			soilMoistureChart.update();
+			// Re-render the chart
+			waterLevelChart.update();
 		})
 		.catch((error) => {
 			console.error('Error fetching sensor data:', error);
@@ -330,8 +306,46 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	initSoilMoistureChart();
 });
 
-// Fetch and update chart data every 5 seconds
-setInterval(updateHumidityChart, 20000);
+/*
+	Function này dùng để gọi data mỗi 20s trên trang index để cập nhật real time
+*/
+// Function to fetch sensor data and update the dashboard
+function fetchSensorData() {
+	axios
+		.get('/sensor')
+		.then((response) => {
+			const sensorData = response.data;
+			const currentTime = new Date().toLocaleString(); // Get current date and time
 
-// Initial fetch to populate the chart immediately
-updateHumidityChart();
+			document.getElementById('temperature').textContent =
+				sensorData.data.temperature + '°C';
+			document.getElementById('humidity').textContent =
+				sensorData.data.humidity + '%';
+			document.getElementById('waterLevel').textContent =
+				sensorData.data.waterLevel + '%';
+			document.getElementById('soilMoisture').textContent =
+				sensorData.data.soilMoisture + '%';
+			document.getElementById('lightLevel').textContent =
+				sensorData.data.timeOfDay;
+
+			document.querySelector('#temperature + .sensor-info').textContent =
+				sensorData.timestamp;
+			document.querySelector('#humidity + .sensor-info').textContent =
+				sensorData.timestamp;
+			document.querySelector('#waterLevel + .sensor-info').textContent =
+				sensorData.timestamp;
+			document.querySelector('#soilMoisture + .sensor-info').textContent =
+				sensorData.timestamp;
+			document.querySelector('#lightLevel + .sensor-info').textContent =
+				sensorData.timestamp;
+		})
+		.catch((error) => {
+			console.error('Error fetching sensor data:', error);
+		});
+}
+
+// Fetch sensor data every 20 seconds
+setInterval(fetchSensorData, 20000);
+
+// Fetch and update chart data every 20 seconds
+setInterval(updateChart, 20000);

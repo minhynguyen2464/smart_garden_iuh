@@ -3,8 +3,11 @@ const {
 	showSensorData,
 	createSensorData,
 	getSensorData,
-	getSensorSetting,
 	get5SensorData,
+	getSmartGardenSettings,
+	updateAutoMode,
+	setFanState,
+	setWaterPumpState,
 } = require('../controllers/gardenController');
 
 const router = express.Router();
@@ -14,6 +17,13 @@ router.get('/sensor', getSensorData);
 router.get('/chart', get5SensorData);
 router.post('/sensor', createSensorData);
 
-router.get('/setting', getSensorSetting);
+router.get('/setting', getSmartGardenSettings);
+router.post('/updateAutoMode', updateAutoMode);
+
+// Route to update the fan state
+router.post('/fan', setFanState);
+
+// Route to update the water pump state
+router.post('/water-pump', setWaterPumpState);
 
 module.exports = router;

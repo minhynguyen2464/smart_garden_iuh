@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Smart Garden Dashboard</title>
+		<!-- Bootstrap CSS -->
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+		/>
+		<!-- FontAwesome -->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+		/>
+		<!-- Custom CSS -->
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+	<body>
+		<!-- Navbar -->
+		<nav class="navbar navbar-expand-lg navbar-dark">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="./">Smart Garden IUH</a>
+				<button
+					class="navbar-toggler"
+					type="button"
+					data-bs-toggle="collapse"
+					data-bs-target="#navbarNav"
+					aria-controls="navbarNav"
+					aria-expanded="false"
+					aria-label="Toggle navigation"
+				>
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarNav">
+					<ul class="navbar-nav ms-auto gap-3">
+						<li class="nav-item">
+							<button id="" class="btn btn-success">
+								<a href="./setting" style="color: white; text-decoration: none"
+									>Cài đặt</a
+								>
+							</button>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<!-- Login Form -->
+		<div
+			class="container d-flex justify-content-center align-items-center vh-100"
+		>
+			<div class="card p-4" style="max-width: 400px; width: 100%; height: auto">
+				<h3 class="text-center mb-4">Đăng nhập</h3>
+				<form id="loginForm">
+					<div class="mb-3">
+						<label for="username" class="form-label">Tên tài khoản</label>
+						<input
+							type="text"
+							class="form-control"
+							id="username"
+							placeholder="Nhập tên tài khoản admin"
+							required
+						/>
+					</div>
+					<div class="mb-3">
+						<label for="password" class="form-label">Mật khẩu</label>
+						<input
+							type="password"
+							class="form-control"
+							id="password"
+							placeholder="Nhập mật khẩu admin"
+							required
+						/>
+					</div>
+					<div class="d-grid">
+						<button type="submit" class="btn btn-outline-success">
+							Đăng nhập
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<!-- Footer -->
+		<footer
+			class="text-white text-center py-3 mt-5"
+			style="background-color: #2e7d32"
+		>
+			<div class="container">
+				<p class="mb-0">© 2024 Smart Garden IUH. All rights reserved.</p>
+				<p class="mb-0">
+					Developed by <a href="#" class="text-white fw-bold">IUH</a>
+				</p>
+			</div>
+		</footer>
+
+		<!-- Scripts -->
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
+		<script src="js/script.js"></script>
+		<script>
+			document
+				.getElementById('loginForm')
+				.addEventListener('submit', async function (event) {
+					event.preventDefault(); // Prevent the default form submission
+
+					const username = document.getElementById('username').value;
+					const password = document.getElementById('password').value;
+
+					try {
+						const response = await axios.post('/login', { username, password });
+						if (response.data.success) {
+							alert('ĐĂNG NHẬP THÀNH CÔNG!');
+							// Redirect to the dashboard or another page
+							window.location.href = '/';
+						} else {
+							alert('ĐĂNG NHẬP THẬT BẠI: ' + response.data.message);
+						}
+					} catch (error) {
+						console.error('Error during login:', error);
+						alert('Server error. Please try again later.');
+					}
+				});
+		</script>
+	</body>
+</html>

@@ -106,3 +106,35 @@ document.addEventListener('DOMContentLoaded', () => {
 	);
 	fanBtn.addEventListener('click', () => toggleButtonState(fanBtn, 'fan'));
 });
+
+document
+	.getElementById('settingForm')
+	.addEventListener('submit', async function (event) {
+		event.preventDefault(); // Prevent the default form submission
+
+		const temperatureThreshold = document.getElementById(
+			'temperatureThreshold'
+		).value;
+		const humidityThreshold =
+			document.getElementById('humidityThreshold').value;
+		const soilMoistureThreshold = document.getElementById(
+			'soilMoistureThreshold'
+		).value;
+
+		try {
+			const response = await axios.post('/settings/save', {
+				temperatureThreshold: parseFloat(temperatureThreshold),
+				humidityThreshold: parseFloat(humidityThreshold),
+				soilMoistureThreshold: parseFloat(soilMoistureThreshold),
+			});
+			document.getElementById('tempValue').innerHTML =
+				response.data.temperatureThreshold;
+			document.getElementById('humidValue').innerHTML =
+				response.data.humidityThreshold;
+			document.getElementById('soilValue').innerHTML =
+				response.data.soilMoistureThreshold;
+		} catch (error) {
+			console.error('Error saving settings:', error);
+			alert('Không thể lưu cài đặt, vui lòng thử lại sau.');
+		}
+	});

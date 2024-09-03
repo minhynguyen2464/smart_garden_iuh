@@ -80,7 +80,7 @@ canvas {
 
 .sensor-mode {
 	color: #4caf50;
-	font-size: 2rem; /* Bigger font size for the value */
+	font-size: 3rem; /* Bigger font size for the value */
 	font-weight: bold; /* Bold text for better readability */
 }
 

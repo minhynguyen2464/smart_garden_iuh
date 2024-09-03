@@ -1,5 +1,12 @@
 const { initializeApp } = require('firebase/app');
 const { getDatabase } = require('firebase/database');
+var admin = require('firebase-admin');
+var serviceAccount = require('./project-1-c9d78-firebase-adminsdk-ffghd-b23fe2650c.json');
+
+admin.initializeApp({
+	credential: admin.credential.cert(serviceAccount),
+	databaseURL: 'https://project-1-c9d78-default-rtdb.firebaseio.com',
+});
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyCnR24elaaAj5ZbvQhOAC36mTRhEsOFn1w',

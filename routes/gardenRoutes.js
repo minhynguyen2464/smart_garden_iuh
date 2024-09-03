@@ -8,6 +8,9 @@ const {
 	updateAutoMode,
 	setFanState,
 	setWaterPumpState,
+	saveThresholds,
+	getLogin,
+	authController,
 } = require('../controllers/gardenController');
 
 const router = express.Router();
@@ -19,11 +22,13 @@ router.post('/sensor', createSensorData);
 
 router.get('/setting', getSmartGardenSettings);
 router.post('/updateAutoMode', updateAutoMode);
-
 // Route to update the fan state
 router.post('/fan', setFanState);
-
 // Route to update the water pump state
 router.post('/water-pump', setWaterPumpState);
+router.post('/settings/save', saveThresholds);
+
+router.get('/login', getLogin);
+router.post('/login', authController.login);
 
 module.exports = router;

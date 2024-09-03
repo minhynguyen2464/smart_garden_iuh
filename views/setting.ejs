@@ -36,11 +36,6 @@
 				<div class="collapse navbar-collapse" id="navbarNav">
 					<ul class="navbar-nav ms-auto gap-3">
 						<li class="nav-item">
-							<button id="toggleDarkMode" class="btn btn-dark">
-								Dark mode
-							</button>
-						</li>
-						<li class="nav-item">
 							<button id="" class="btn btn-success">
 								<a href="./setting" style="color: white; text-decoration: none"
 									>Cài đặt</a
@@ -58,7 +53,7 @@
 				<!-- Left Side: Form -->
 				<div class="col-lg-4">
 					<div class="card p-3" style="height: auto">
-						<form action="/settings/save" method="POST">
+						<form action="/settings/save" method="POST" id="settingForm">
 							<div class="row mb-3">
 								<div class="col-md-12">
 									<label for="temperatureThreshold" class="form-label"
@@ -129,15 +124,15 @@
 								<div class="col-lg-12 d-flex justify-content-between">
 									<p class="mb-0">
 										<i class="fas fa-thermometer-half fa-2x m-2"></i>
-										<%= temperatureThreshold%>°C
+										<span id="tempValue"><%= temperatureThreshold%></span>°C
 									</p>
 									<p class="mb-0">
 										<i class="fas fa-tint fa-2x m-2"></i>
-										<%= humidityThreshold %>%
+										<span id="humidValue"><%= humidityThreshold %></span>%
 									</p>
 									<p class="mb-0">
 										<i class="fas fa-seedling fa-2x m-2"></i>
-										<%= soilMoistureThreshold %>%
+										<span id="soilValue"><%= soilMoistureThreshold %></span>%
 									</p>
 								</div>
 							</div>
@@ -206,7 +201,7 @@
 		<!-- Footer -->
 		<footer
 			class="text-white text-center py-3 mt-5"
-			style="background-color: #4caf50"
+			style="background-color: #2e7d32"
 		>
 			<div class="container">
 				<p class="mb-0">© 2024 Smart Garden IUH. All rights reserved.</p>

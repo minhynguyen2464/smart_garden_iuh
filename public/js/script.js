@@ -1,10 +1,3 @@
-// Dark Mode Toggle
-document
-	.getElementById('toggleDarkMode')
-	.addEventListener('click', function () {
-		document.body.classList.toggle('dark-mode');
-	});
-
 // Charts
 const ctxTemp = document.getElementById('temperatureChart').getContext('2d');
 const ctxHumidity = document.getElementById('humidityChart').getContext('2d');
@@ -34,7 +27,7 @@ const temperatureChart = new Chart(ctxTemp, {
 		labels: [], // Will be updated with actual labels
 		datasets: [
 			{
-				label: 'Temperature (°C)',
+				label: 'Nhiệt độ (°C)',
 				data: [], // Will be updated with actual temperatures
 				borderColor: 'rgb(255, 99, 132)',
 				tension: 0.4,
@@ -47,14 +40,14 @@ const temperatureChart = new Chart(ctxTemp, {
 				beginAtZero: true,
 				title: {
 					display: true,
-					text: 'Time of Day',
+					text: 'Thời gian',
 				},
 			},
 			y: {
 				beginAtZero: true,
 				title: {
 					display: true,
-					text: 'Temperature (°C)',
+					text: 'Nhiệt độ (°C)',
 				},
 			},
 		},
@@ -100,7 +93,7 @@ const humidityChart = new Chart(ctxHumidity, {
 		labels: [], // Initial labels
 		datasets: [
 			{
-				label: 'Humidity (%)',
+				label: 'Độ ẩm (%)',
 				data: [], // Initial data
 				borderColor: 'rgb(54, 162, 235)',
 				tension: 0.4,
@@ -113,14 +106,14 @@ const humidityChart = new Chart(ctxHumidity, {
 				beginAtZero: true,
 				title: {
 					display: true,
-					text: 'Time of Day',
+					text: 'Thời gian',
 				},
 			},
 			y: {
 				beginAtZero: true,
 				title: {
 					display: true,
-					text: 'Humidity (%)',
+					text: 'Độ ẩm (%)',
 				},
 			},
 		},
@@ -167,14 +160,31 @@ const soilMoistureChart = new Chart(ctxSoil, {
 		labels: [],
 		datasets: [
 			{
-				label: 'Soil Moisture (%)',
+				label: 'Độ ẩm đất (%)',
 				data: [],
 				borderColor: 'rgb(75, 192, 192)',
 				tension: 0.4,
 			},
 		],
 	},
-	options: {},
+	options: {
+		scales: {
+			x: {
+				beginAtZero: true,
+				title: {
+					display: true,
+					text: 'Thời gian',
+				},
+			},
+			y: {
+				beginAtZero: true,
+				title: {
+					display: true,
+					text: 'Độ ẩm đất (%)',
+				},
+			},
+		},
+	},
 });
 
 function initSoilMoistureChart() {

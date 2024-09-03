@@ -36,11 +36,6 @@
 				<div class="collapse navbar-collapse" id="navbarNav">
 					<ul class="navbar-nav ms-auto gap-3">
 						<li class="nav-item">
-							<button id="toggleDarkMode" class="btn btn-dark">
-								Dark mode
-							</button>
-						</li>
-						<li class="nav-item">
 							<button id="" class="btn btn-success">
 								<a href="./setting" style="color: white; text-decoration: none"
 									>Cài đặt</a
@@ -62,8 +57,8 @@
 						<div class="card shadow-sm text-center">
 							<div class="card-body">
 								<i class="fas fa-seedling fa-2x mb-2"></i>
-								<h5 class="card-title">Soil Moisture</h5>
-								<span class="sensor-info">Last value Soil Moisture</span>
+								<h5 class="card-title">Độ ẩm đất</h5>
+								<span class="sensor-info">Cập nhật lần cuối</span>
 								<p id="soilMoisture" class="sensor-value">
 									<%= sensor.data.soilMoisture %>%
 								</p>
@@ -77,8 +72,8 @@
 						<div class="card shadow-sm text-center">
 							<div class="card-body">
 								<i class="fas fa-thermometer-half fa-2x mb-2"></i>
-								<h5 class="card-title">Temperature</h5>
-								<span class="sensor-info">Last value Temperature</span>
+								<h5 class="card-title">Nhiệt độ</h5>
+								<span class="sensor-info">Cập nhật lần cuối</span>
 								<p id="temperature" class="sensor-value">
 									<%= sensor.data.temperature %>°C
 								</p>
@@ -92,8 +87,8 @@
 						<div class="card shadow-sm text-center">
 							<div class="card-body">
 								<i class="fas fa-tint fa-2x mb-2"></i>
-								<h5 class="card-title">Humidity</h5>
-								<span class="sensor-info">Last value Humidity</span>
+								<h5 class="card-title">Độ ẩm</h5>
+								<span class="sensor-info">Cập nhật lần cuối</span>
 								<p id="humidity" class="sensor-value">
 									<%= sensor.data.humidity %>%
 								</p>
@@ -107,8 +102,8 @@
 						<div class="card shadow-sm text-center">
 							<div class="card-body">
 								<i class="fas fa-sun fa-2x mb-2"></i>
-								<h5 class="card-title">Light Level</h5>
-								<span class="sensor-info">Last value Light Level</span>
+								<h5 class="card-title">Độ sáng</h5>
+								<span class="sensor-info">Cập nhật lần cuối</span>
 								<p id="lightLevel" class="sensor-value">
 									<%= sensor.data.timeOfDay %>
 								</p>
@@ -122,8 +117,8 @@
 						<div class="card shadow-sm text-center">
 							<div class="card-body">
 								<i class="fas fa-bucket fa-2x mb-2"></i>
-								<h5 class="card-title">Water Level</h5>
-								<span class="sensor-info">Last value Water Level</span>
+								<h5 class="card-title">Mực nước</h5>
+								<span class="sensor-info">Cập nhật lần cuối</span>
 								<p id="waterLevel" class="sensor-value">
 									<%= sensor.data.waterLevel %>%
 								</p>
@@ -136,19 +131,9 @@
 						<div class="card shadow-sm text-center">
 							<div class="card-body">
 								<i class="fas fa-gears fa-2x mb-2"></i>
-								<h5 class="card-title">Care Mode</h5>
-								<p id="careMode" class="sensor-mode mt-4 mb-4">Automatic</p>
-								<span class="sensor-info">
-									<div class="d-flex justify-content-center align-items-center">
-										<button
-											type="button"
-											class="btn btn-success"
-											onclick="toggleCareMode()"
-										>
-											Toggle
-										</button>
-									</div>
-								</span>
+								<h5 class="card-title">Chế độ chăm sóc</h5>
+								<p id="careMode" class="sensor-mode mt-4 mb-4">Tự động</p>
+								<span class="sensor-info"><%= sensor.timestamp %></span>
 							</div>
 						</div>
 					</div>
@@ -184,12 +169,15 @@
 		<!-- Footer -->
 		<footer
 			class="text-white text-center py-3 mt-5"
-			style="background-color: #4caf50"
+			style="background-color: #2e7d32"
 		>
 			<div class="container">
 				<p class="mb-0">© 2024 Smart Garden IUH. All rights reserved.</p>
 				<p class="mb-0">
-					Developed by <a href="#" class="text-white fw-bold">IUH</a>
+					Developed by
+					<a href="#" class="text-white fw-bold"
+						>Nguyễn Minh Ý & Phạm Quốc Trung</a
+					>
 				</p>
 			</div>
 		</footer>

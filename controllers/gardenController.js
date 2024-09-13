@@ -9,6 +9,7 @@ const {
 	authModel,
 } = require('../models/gardenModel');
 
+const nodemailer = require('nodemailer');
 /*
 	This is index.ejs file code
 */
@@ -36,6 +37,7 @@ const getSensorData = async (req, res) => {
 		const sensorData = await getLatestSensorData();
 		const formattedTimestamp = formatDate(sensorData.timestamp);
 		sensorData.timestamp = formattedTimestamp;
+
 		res.json(sensorData); // Send sensor data as JSON
 	} catch (error) {
 		res.status(500).json({ error: error.message }); // Return error message as JSON
@@ -214,6 +216,84 @@ const authController = {
 	},
 };
 
+// Email Configuration
+const transporter = nodemailer.createTransport({
+	service: 'gmail',
+	auth: {
+		user: 'minhynguyen97@gmail.com', // Replace with your email
+		pass: 'hhli wtvj upau hjlp', // Replace with your email password or app password
+	},
+});
+
+// Function to send an email alert
+const sendEmailAlert = async (
+	temperature,
+	humidity,
+	soilMoisture,
+	waterLevel
+) => {
+	const mailOptions = {
+		from: 'minhynguyen97@gmail.com', // Replace with your email
+		to: 'minhynguyen0203@gmail.com', // Replace with recipient email
+		subject: 'CẢNH BÁO NHIỆT ĐỘ!',
+		html: `
+		<div style="width: 100%; max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+			<div style="background-color: #f44336; color: white; padding: 10px 15px; text-align: center; border-top-left-radius: 10px; border-top-right-radius: 10px;">
+				<h2>🔥 CẢNH BÁO NHIỆT ĐỘ!</h2>
+			</div>
+			<div style="padding: 20px; text-align: center;">
+				<p style="font-size: 18px; color: #333;">Nhiệt độ trong vườn đang vượt quá mức cho phép</p>
+				<p style="font-size: 16px;">Current temperature: <strong style="color: #e53935; font-size: 22px;">${temperature}°C</strong></p>
+				<hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+				<h3>Chi tiết cảm biết</h3>
+				<table style="width: 100%; text-align: left; border-collapse: collapse;">
+					<tr>
+						<th style="padding: 10px; border-bottom: 1px solid #ddd;">Độ ẩm không khí</th>
+						<td style="padding: 10px; border-bottom: 1px solid #ddd;">${humidity}%</td>
+					</tr>
+					<tr>
+						<th style="padding: 10px; border-bottom: 1px solid #ddd;">Độ ẩm đất</th>
+						<td style="padding: 10px; border-bottom: 1px solid #ddd;">${soilMoisture}%</td>
+					</tr>
+					<tr>
+						<th style="padding: 10px; border-bottom: 1px solid #ddd;">Mực nước</th>
+						<td style="padding: 10px; border-bottom: 1px solid #ddd;">${waterLevel}%</td>
+					</tr>
+				</table>
+				<p style="font-size: 14px; color: #888; margin-top: 20px;">Hãy chuyển chế độ chăm sóc sang Tự Động hoặc điều khiển Thủ Công!</p>
+			</div>
+			<div style="background-color: #f7f7f7; padding: 10px 15px; text-align: center; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+				<p style="font-size: 12px; color: #777;">Đây là tin nhắn tự động. Không cần hồi âm!</p>
+			</div>
+		</div>
+		`,
+	};
+	try {
+		await transporter.sendMail(mailOptions);
+		console.log('Caution email sent successfully!');
+	} catch (error) {
+		console.error('Error sending email:', error);
+	}
+};
+
+// Controller function to check temperature and send email
+const checkTemperatureAndSendAlert = async () => {
+	try {
+		const sensorData = await getLatestSensorData();
+		const temperature = sensorData.data.temperature;
+		const humidity = sensorData.data.humidity;
+		const soilMoisture = sensorData.data.soilMoisture;
+		const waterLevel = sensorData.data.waterLevel;
+		console.log('Temp now is ' + temperature);
+		// Check if temperature exceeds threshold
+		if (temperature > 35) {
+			await sendEmailAlert(temperature, humidity, soilMoisture, waterLevel);
+		}
+	} catch (error) {
+		console.error('Error in temperature check and alert:', error);
+	}
+};
+
 module.exports = {
 	get5SensorData,
 	showSensorData,
@@ -226,4 +306,5 @@ module.exports = {
 	saveThresholds,
 	getLogin,
 	authController,
+	checkTemperatureAndSendAlert,
 };

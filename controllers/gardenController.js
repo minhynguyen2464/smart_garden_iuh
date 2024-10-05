@@ -7,12 +7,13 @@ const {
 	updateFanState,
 	updateThresholds,
 	authModel,
+	getLatestImage,
 } = require('../models/gardenModel');
 
 const nodemailer = require('nodemailer');
-/*
-	This is index.ejs file code
-*/
+const fs = require('fs');
+const axios = require('axios');
+const FormData = require('form-data');
 
 // Controller to display the latest sensor data
 const showSensorData = async (req, res) => {
@@ -277,6 +278,10 @@ const sendEmailAlert = async (
 };
 
 // Controller function to check temperature and send email
+/**
+ * The function `checkTemperatureAndSendAlert` asynchronously retrieves the latest sensor data and
+ * sends an email alert if the temperature exceeds a threshold.
+ */
 const checkTemperatureAndSendAlert = async () => {
 	try {
 		const sensorData = await getLatestSensorData();
@@ -294,6 +299,93 @@ const checkTemperatureAndSendAlert = async () => {
 	}
 };
 
+/**
+ * The function `getPlantHealth` is an asynchronous function that retrieves the latest image, predicts
+ * the health of a plant using a machine learning model, and renders the result on a webpage if the
+ * user is an admin.
+ * @param req - The `req` parameter in the `getPlantHealth` function stands for the request object,
+ * which contains information about the HTTP request that triggered the function. This object typically
+ * includes details such as the request headers, parameters, body, and session data.
+ * @param res - The `res` parameter in the `getPlantHealth` function is the response object that will
+ * be used to send a response back to the client making the request. It is typically used to render a
+ * view or send data back to the client.
+ */
+const getPlantHealth = async (req, res) => {
+	try {
+		if (req.session.username === 'admin') {
+			let result = await getLatestImage();
+			//let predictResult = await loadModelAndPredict(result.url);
+			let predictResult = await loadModelAndPredict(result.url);
+			console.log(predictResult.prediction);
+			res.render('health', {
+				pictures: result.url,
+				filename: result.filename,
+				predictResult: predictResult.prediction,
+				predictConfidence: 0,
+			});
+		} else {
+			res.render('login');
+		}
+	} catch (error) {
+		console.log(error);
+		res.status(500).send(error.message);
+	}
+};
+
+// Function to call the Python API
+/**
+ * The function `getPrediction` fetches an image from a URL, converts it to a buffer, sends a POST
+ * request to a Python Flask server with the image data, and returns the prediction result.
+ * @param imageUrl - The `imageUrl` parameter in the `getPrediction` function is the URL of the image
+ * that you want to send to a Python Flask server for prediction. The function fetches the image from
+ * this URL, converts it to a buffer, and then sends a POST request to the Python Flask server with the
+ * @returns The `getPrediction` function is returning the result of the prediction made by the Python
+ * Flask server after processing the image provided in the `imageUrl`. If there is an error during the
+ * process, it will log the error message to the console.
+ */
+const getPrediction = async (imageUrl) => {
+	try {
+		// Fetch the image from the URL
+		const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+
+		// Convert the image to a buffer
+		const imageBuffer = Buffer.from(response.data, 'binary');
+
+		// Prepare form-data for the request
+		const form = new FormData();
+		form.append('image', imageBuffer, { filename: 'image.jpg' }); // Provide a filename
+
+		// Send POST request to the Python Flask server
+		const apiResponse = await axios.post(
+			'http://localhost:5000/predict',
+			form,
+			{
+				headers: form.getHeaders(),
+			}
+		);
+
+		// Output the prediction
+		const result = apiResponse.data;
+		return result;
+	} catch (error) {
+		console.error('Error calling Python API:', error);
+	}
+};
+
+/**
+ * The function `loadModelAndPredict` asynchronously loads a model and predicts using an image URL
+ * provided as input.
+ * @param urlPath - The `urlPath` parameter in the `loadModelAndPredict` function is a string that
+ * represents the URL path of an image that will be used for prediction.
+ * @returns The function `loadModelAndPredict` is returning the result of the prediction made on the
+ * image specified by the `urlPath`.
+ */
+const loadModelAndPredict = async (urlPath) => {
+	const imageUrl = urlPath; // Replace with actual image URL
+	const result = await getPrediction(imageUrl);
+	return result;
+};
+
 module.exports = {
 	get5SensorData,
 	showSensorData,
@@ -307,4 +399,5 @@ module.exports = {
 	getLogin,
 	authController,
 	checkTemperatureAndSendAlert,
+	getPlantHealth,
 };

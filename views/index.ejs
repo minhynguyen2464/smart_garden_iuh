@@ -37,6 +37,13 @@
 					<ul class="navbar-nav ms-auto gap-3">
 						<li class="nav-item">
 							<button id="" class="btn btn-success">
+								<a href="./health" style="color: white; text-decoration: none"
+									>Sức khỏe cây trồng</a
+								>
+							</button>
+						</li>
+						<li class="nav-item">
+							<button id="" class="btn btn-success">
 								<a href="./setting" style="color: white; text-decoration: none"
 									>Cài đặt</a
 								>
@@ -98,19 +105,6 @@
 					</div>
 
 					<!-- Light Level -->
-					<div class="col-md-4 col-lg-4 mb-4">
-						<div class="card shadow-sm text-center">
-							<div class="card-body">
-								<i class="fas fa-sun fa-2x mb-2"></i>
-								<h5 class="card-title">Độ sáng</h5>
-								<span class="sensor-info">Cập nhật lần cuối</span>
-								<p id="lightLevel" class="sensor-value">
-									<%= sensor.data.timeOfDay %>
-								</p>
-								<span class="sensor-info"><%= sensor.timestamp %></span>
-							</div>
-						</div>
-					</div>
 
 					<!-- Water Level -->
 					<div class="col-md-4 col-lg-4 mb-4">

@@ -1,4 +1,6 @@
-const db = require('../config/firebaseConfig');
+const { db } = require('../config/firebaseConfig');
+const { storage } = require('../config/firebaseConfig'); // Ensure correct path
+
 const {
 	ref,
 	get,
@@ -59,9 +61,11 @@ const getLatestSensorData = async () => {
 };
 
 /**
- * Method to get the latest 5 sensor data entries from the 'sensors' node
- * @returns {Promise<Object>} - Returns an object containing arrays of the last 5 timestamps, temperatures, humidities, and soil moistures
- * @throws {Error} - Throws an error if data retrieval fails
+ * The function `getLatest5SensorData` retrieves the latest 5 sensor data records from a Firebase
+ * Realtime Database and organizes them into separate arrays based on temperature, humidity, soil
+ * moisture, and timestamps.
+ * @returns The `getLatest5SensorData` function returns an object containing arrays of the latest 5
+ * sensor data values for temperatures, humidities, soil moistures, and timestamps.
  */
 const getLatest5SensorData = async () => {
 	const dbRef = ref(db, 'sensors');
@@ -105,9 +109,12 @@ const getLatest5SensorData = async () => {
 };
 
 /**
- * Method to get the configuration values from the 'relay' node
- * @returns {Promise<Object>} - Returns the config values from Firebase
- * @throws {Error} - Throws an error if data retrieval fails
+ * The function `getConfigValues` retrieves configuration values from a Firebase database under the
+ * 'relay' node.
+ * @returns The `getConfigValues` function returns the data fetched from the 'relay' node in Firebase
+ * if it exists. If no data is available, it throws an error with the message 'No data available'. If
+ * there is an error during the retrieval process, it throws an error with the message 'Error
+ * retrieving config values' followed by the specific error message.
  */
 const getConfigValues = async () => {
 	const dbRef = ref(db, 'relay'); // Reference to the 'relay' node
@@ -231,6 +238,80 @@ const authModel = {
 	},
 };
 
+/**
+ * Function to get the latest image from Firebase Storage
+ * Assumes filenames follow the format 'day-month-year-hour-minute-second.png'
+ * @returns {Promise<string>} - The public URL of the latest image
+ * @throws {Error} - Throws an error if image retrieval fails
+ */
+const getLatestImage = async () => {
+	const bucket = storage.bucket();
+	const folder = 'photos'; // Folder where images are stored
+
+	try {
+		// List all files in the 'photos' folder
+		const [files] = await bucket.getFiles({ prefix: folder });
+
+		if (files.length === 0) {
+			throw new Error('No images found in Firebase Storage');
+		}
+
+		const sortedFiles = files
+			.map((file) => file.name)
+			.filter((name) => name.endsWith('.png')) // Only consider PNG files
+			.sort((a, b) => {
+				// Extract parts from filename (DD-MM-YY-HH-mm-ss)
+				const [dayA, monthA, yearA, hourA, minuteA, secondA] = a
+					.replace('.png', '')
+					.split('-')
+					.map(Number);
+
+				const [dayB, monthB, yearB, hourB, minuteB, secondB] = b
+					.replace('.png', '')
+					.split('-')
+					.map(Number);
+
+				// Create date objects from parts
+				const dateA = new Date(
+					2000 + yearA, // Adjust for YY (assuming all years are in 2000+)
+					monthA - 1, // Months are 0-indexed in JS Date
+					dayA,
+					hourA,
+					minuteA,
+					secondA
+				);
+
+				const dateB = new Date(
+					2000 + yearB,
+					monthB - 1,
+					dayB,
+					hourB,
+					minuteB,
+					secondB
+				);
+
+				// Sort in descending order (latest first)
+				return dateB - dateA;
+			});
+		// Get the latest image file name
+		const lastestImageIndex = sortedFiles.length - 1;
+		const latestFileName = sortedFiles[lastestImageIndex];
+		// Generate a signed URL for accessing the image
+		const [url] = await bucket.file(latestFileName).getSignedUrl({
+			action: 'read',
+			expires: '03-01-2500', // Set a far future expiration date
+		});
+		const result = {
+			url: url,
+			filename: latestFileName,
+		};
+		return result; // Return the public URL of the latest image
+	} catch (error) {
+		console.error('Error retrieving the latest image:', error);
+		throw new Error('Failed to retrieve the latest image');
+	}
+};
+
 module.exports = {
 	getSensorValues,
 	getLatestSensorData,
@@ -240,5 +321,6 @@ module.exports = {
 	updateFanState,
 	updateWaterPumpState,
 	updateThresholds,
+	getLatestImage,
 	authModel,
 };

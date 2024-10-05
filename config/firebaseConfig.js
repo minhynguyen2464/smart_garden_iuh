@@ -6,6 +6,7 @@ var serviceAccount = require('./project-1-c9d78-firebase-adminsdk-ffghd-b23fe265
 admin.initializeApp({
 	credential: admin.credential.cert(serviceAccount),
 	databaseURL: 'https://project-1-c9d78-default-rtdb.firebaseio.com',
+	storageBucket: 'gs://project-1-c9d78.appspot.com',
 });
 
 const firebaseConfig = {
@@ -21,5 +22,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+const storage = admin.storage();
 
-module.exports = db;
+module.exports = { db, storage };

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Smart Garden Dashboard</title>
+		<!-- Bootstrap CSS -->
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+		/>
+		<!-- FontAwesome -->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+		/>
+		<!-- Custom CSS -->
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+	<body>
+		<!-- Navbar -->
+		<nav class="navbar navbar-expand-lg navbar-dark">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="./">Smart Garden IUH</a>
+				<button
+					class="navbar-toggler"
+					type="button"
+					data-bs-toggle="collapse"
+					data-bs-target="#navbarNav"
+					aria-controls="navbarNav"
+					aria-expanded="false"
+					aria-label="Toggle navigation"
+				>
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarNav">
+					<ul class="navbar-nav ms-auto gap-3">
+						<li class="nav-item">
+							<button id="" class="btn btn-success">
+								<a href="./health" style="color: white; text-decoration: none"
+									>Sức khỏe cây trồng</a
+								>
+							</button>
+						</li>
+						<li class="nav-item">
+							<button id="" class="btn btn-success">
+								<a href="./setting" style="color: white; text-decoration: none"
+									>Cài đặt</a
+								>
+							</button>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container py-4">
+			<h1 class="text-center mb-5 text-success">
+				Smart Garden Sức Khỏe Cây Trồng <i class="fa-solid fa-heart"></i>
+			</h1>
+			<div class="row justify-content-center">
+				<div class="col-lg-4 text-center">
+					<img
+						src="<%= pictures %>"
+						alt=""
+						width="80%"
+						height="80%"
+						id="plant-picture"
+					/>
+					<br />
+					<p>Hình ảnh của cây trồng</p>
+				</div>
+				<div class="col-lg-4 health-info">
+					<h2 class="text-center">Phiếu Theo Dõi Sức Khỏe</h2>
+					<hr />
+					<p id="filename" style="display: none"><%= filename %></p>
+					<p>Ngày: <span id="day">5/10/2024</span></p>
+					<p>Giờ: <span id="hour">2:57PM</span></p>
+					<p>
+						Tình trạng:
+						<span id="healthResult"><%= predictResult %></span>
+					</p>
+					<p>Hướng dẫn: <span id="advice"></span></p>
+					<hr />
+					<div class="text-center">
+						<button class="text-center btn btn-success">Cập nhật ngay</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Footer -->
+		<footer
+			class="text-white text-center py-3 mt-5"
+			style="background-color: #2e7d32"
+		>
+			<div class="container">
+				<p class="mb-0">© 2024 Smart Garden IUH. All rights reserved.</p>
+				<p class="mb-0">
+					Developed by
+					<a href="#" class="text-white fw-bold"
+						>Nguyễn Minh Ý & Phạm Quốc Trung</a
+					>
+				</p>
+			</div>
+		</footer>
+		<!-- Scripts -->
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
+		<script src="js/health.js"></script>
+	</body>
+</html>

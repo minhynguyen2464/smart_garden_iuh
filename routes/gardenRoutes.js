@@ -10,6 +10,7 @@ const {
 	setWaterPumpState,
 	saveThresholds,
 	getLogin,
+	getPlantHealth,
 	authController,
 } = require('../controllers/gardenController');
 
@@ -31,4 +32,5 @@ router.post('/settings/save', saveThresholds);
 router.get('/login', getLogin);
 router.post('/login', authController.login);
 
+router.get('/health', getPlantHealth);
 module.exports = router;

@@ -10,14 +10,20 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"axios": "^1.7.7",
 		"body-parser": "^1.20.2",
 		"ejs": "^3.1.10",
 		"express": "^4.19.2",
 		"express-session": "^1.18.0",
 		"firebase": "^10.13.0",
 		"firebase-admin": "^12.4.0",
+		"form-data": "^4.0.0",
+		"fs": "^0.0.1-security",
 		"node-cron": "^3.0.3",
-		"nodemailer": "^6.9.15"
+		"nodemailer": "^6.9.15",
+		"onnxruntime-node": "^1.19.2",
+		"path": "^0.12.7",
+		"sharp": "^0.33.5"
 	},
 	"devDependencies": {
 		"nodemon": "^3.1.4"

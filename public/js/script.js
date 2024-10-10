@@ -250,10 +250,10 @@ const formatTimestamp = (timestamp) => {
 	const [datePart, timePart] = timestamp.split(' ');
 
 	// Extract hours and minutes from the time part
-	const [hours, minutes] = timePart.split(':');
+	const [hours, minutes, seconds] = timePart.split(':');
 
 	// Format the time in HH:MM
-	return `${hours}:${minutes}`;
+	return `${hours}:${minutes}:${seconds}`;
 };
 
 /*

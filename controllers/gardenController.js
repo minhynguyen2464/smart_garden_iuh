@@ -5,6 +5,7 @@ const {
 	updateAutoModeModel,
 	updateWaterPumpState,
 	updateFanState,
+	updateCameraState,
 	updateThresholds,
 	authModel,
 	getLatestImage,
@@ -316,12 +317,11 @@ const getPlantHealth = async (req, res) => {
 			let result = await getLatestImage();
 			//let predictResult = await loadModelAndPredict(result.url);
 			let predictResult = await loadModelAndPredict(result.url);
-			console.log(predictResult.prediction);
 			res.render('health', {
-				pictures: result.url,
-				filename: result.filename,
+				pictures: result.url, //Google Storage url
+				filename: result.filename, //8-10-2024-11-04-23
 				predictResult: predictResult.prediction,
-				predictConfidence: 0,
+				predictConfidence: 0, //Dont use
 			});
 		} else {
 			res.render('login');
@@ -364,6 +364,14 @@ const getPrediction = async (imageUrl) => {
 			}
 		);
 
+		// const apiResponse = await axios.post(
+		// 	'http://lettuce-detection-1.onrender.com:10000/predict',
+		// 	form,
+		// 	{
+		// 		headers: form.getHeaders(),
+		// 	}
+		// );
+
 		// Output the prediction
 		const result = apiResponse.data;
 		return result;
@@ -386,6 +394,19 @@ const loadModelAndPredict = async (urlPath) => {
 	return result;
 };
 
+// Controller to handle updating the water pump state
+const setCameraState = async (req, res) => {
+	const { state } = req.body; // Expecting 'state' to be sent in the request body
+
+	try {
+		const result = await updateCameraState(state);
+		res.status(200).json(result);
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ success: false, message: error.message });
+	}
+};
+
 module.exports = {
 	get5SensorData,
 	showSensorData,
@@ -400,4 +421,5 @@ module.exports = {
 	authController,
 	checkTemperatureAndSendAlert,
 	getPlantHealth,
+	setCameraState,
 };

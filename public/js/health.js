@@ -24,13 +24,6 @@ function formatToPercentage(value, decimalPlaces = 0) {
 	return `${percentage}%`;
 }
 
-// const healthConfidenceElement = document.getElementById('healthConfidence');
-// // Format the confidence value
-// const formattedConfidence = formatToPercentage(
-// 	healthConfidenceElement.innerHTML
-// );
-// healthConfidenceElement.innerHTML = formattedConfidence;
-
 const healthPrediction = document.getElementById('healthResult');
 
 // List of health issues that should trigger the red color
@@ -61,5 +54,71 @@ if (adviceMapping[healthPrediction.innerHTML]) {
 	adviceTextBox.innerHTML = adviceMapping[healthPrediction.innerHTML]; // Display the corresponding advice
 } else {
 	adviceTextBox.innerHTML =
-		'Your lettuce is in good condition! No action needed.'; // Default for good condition
+		'Rau của bạn đang khỏe mạnh! Không cần phải bổ sung gì thêm.'; // Default for good condition
 }
+
+const uploadButton = document.getElementById('uploadPicture');
+const fileInput = document.getElementById('fileInput');
+
+// Event listener for the button click
+uploadButton.addEventListener('click', async () => {
+	const file = fileInput.files[0];
+
+	if (file) {
+		const formData = new FormData();
+		formData.append('file', file);
+
+		try {
+			// Send file to the server route via axios
+			const response = await axios.post('/upload', formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			});
+
+			// Output the server response
+			console.log('File uploaded successfully:', response.data);
+		} catch (error) {
+			console.error('Error uploading file:', error);
+		}
+	} else {
+		alert('Please select a file first!');
+	}
+});
+
+document
+	.getElementById('capturePicture')
+	.addEventListener('click', async () => {
+		try {
+			const response = await axios.post('/camera'); // Trigger the route
+			console.log('Camera response:', response.data);
+		} catch (error) {
+			console.error('Error capturing picture:', error);
+		}
+	});
+
+document
+	.getElementById('capturePicture')
+	.addEventListener('click', function () {
+		// Show the notification
+		const notificationDiv = document.getElementById('countdownNotification');
+		const countdownSpan = document.getElementById('countdown');
+		console.log(notificationDiv);
+		let countdown = 5; // Starting countdown value
+
+		// Display the notification
+		notificationDiv.style.display = 'block';
+
+		// Update the countdown every second
+		const interval = setInterval(() => {
+			countdown -= 1;
+			countdownSpan.textContent = countdown;
+
+			// When countdown reaches 0, stop the interval and hide the notification
+			if (countdown === 0) {
+				clearInterval(interval);
+				countdown = 5;
+				notificationDiv.style.display = 'none';
+			}
+		}, 1000);
+	});

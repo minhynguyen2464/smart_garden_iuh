@@ -4,6 +4,7 @@ const { storage } = require('../config/firebaseConfig'); // Ensure correct path
 const {
 	ref,
 	get,
+	set,
 	query,
 	orderByKey,
 	limitToLast,
@@ -182,6 +183,28 @@ const updateWaterPumpState = async (waterPumpState) => {
 	}
 };
 
+const updateCameraState = async () => {
+	const cameraRef = ref(db, 'relay/camera'); // Reference to 'relay/camera' in Firebase
+
+	try {
+		// Set 'relay/camera' to 1
+		await set(cameraRef, 1);
+		console.log('Camera state set to 1');
+
+		// Wait for 5 seconds
+		await new Promise((resolve) => setTimeout(resolve, 5000));
+
+		// Set 'relay/camera' back to 0
+		await set(cameraRef, 0);
+		console.log('Camera state set back to 0');
+
+		return { message: 'Camera was triggered successfully' };
+	} catch (error) {
+		console.error('Error setting camera state:', error);
+		throw new Error('Failed to set camera state');
+	}
+};
+
 /**
  * Function to update temperature, humidity, and soil moisture thresholds in Firebase
  * @param {number} temperature - The new temperature threshold to be updated
@@ -291,7 +314,7 @@ const getLatestImage = async () => {
 				);
 
 				// Sort in descending order (latest first)
-				return dateB - dateA;
+				return dateA - dateB;
 			});
 		// Get the latest image file name
 		const lastestImageIndex = sortedFiles.length - 1;
@@ -322,5 +345,6 @@ module.exports = {
 	updateWaterPumpState,
 	updateThresholds,
 	getLatestImage,
+	updateCameraState,
 	authModel,
 };

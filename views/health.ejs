@@ -83,7 +83,27 @@
 					<p>Hướng dẫn: <span id="advice"></span></p>
 					<hr />
 					<div class="text-center">
-						<button class="text-center btn btn-success">Cập nhật ngay</button>
+						<button class="text-center btn btn-success" id="capturePicture">
+							Chụp hình
+						</button>
+						<!-- Notification Div -->
+						<div
+							id="countdownNotification"
+							style="
+								display: none;
+								background-color: 2e7d32;
+								border: 1px solid black;
+								margin-top: 10px;
+							"
+						>
+							Vui lòng đợi <span id="countdown">5</span> giây...
+						</div>
+
+						<hr />
+						<input type="file" id="fileInput" accept="image/*" />
+						<button class="btn btn-success" id="uploadPicture">
+							Up file hình
+						</button>
 					</div>
 				</div>
 			</div>

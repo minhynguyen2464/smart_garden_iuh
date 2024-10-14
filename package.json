@@ -22,7 +22,6 @@
 		"multer": "^1.4.5-lts.1",
 		"node-cron": "^3.0.3",
 		"nodemailer": "^6.9.15",
-		"onnxruntime-node": "^1.19.2",
 		"path": "^0.12.7",
 		"sharp": "^0.33.5"
 	},

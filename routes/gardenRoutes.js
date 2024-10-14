@@ -17,6 +17,7 @@ const {
 	getPlantHealth,
 	authController,
 	setCameraState,
+	getHistory,
 } = require('../controllers/gardenController');
 
 const router = express.Router();
@@ -94,4 +95,6 @@ router.post('/upload', upload.single('file'), async (req, res) => {
 });
 
 router.post('/camera', setCameraState);
+
+router.get('/history', getHistory);
 module.exports = router;

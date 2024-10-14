@@ -355,7 +355,7 @@ function fetchSensorData() {
 }
 
 // Fetch sensor data every 20 seconds
-setInterval(fetchSensorData, 20000);
+setInterval(fetchSensorData, 5000);
 
 // Fetch and update chart data every 20 seconds
-setInterval(updateChart, 20000);
+setInterval(updateChart, 5000);

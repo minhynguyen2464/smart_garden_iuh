@@ -24,13 +24,17 @@ function formatToPercentage(value, decimalPlaces = 0) {
 	return `${percentage}%`;
 }
 
-const healthPrediction = document.getElementById('healthResult');
+const healthConfidence = document.getElementById('healthConfidence');
+const formatConfidenceValue = formatToPercentage(healthConfidence.innerHTML);
+healthConfidence.innerHTML = formatConfidenceValue;
 
+const healthPrediction = document.getElementById('healthResult');
 // List of health issues that should trigger the red color
 const unhealthyConditions = [
 	'Thiếu hụt Kali -K',
 	'Thiếu hụt Nito N-',
 	'Thiếu hụt photpho -P',
+	'Không nhận diện được',
 ];
 
 // Check if the innerHTML matches any of the unhealthy conditions
@@ -47,6 +51,7 @@ const adviceMapping = {
 	'Thiếu hụt Nito N-': 'Hãy đảm bảo cây được bón đạm thích hợp.',
 	'Thiếu hụt photpho -P': 'Hãy sử dụng các loại phân bón giàu phốt pho.',
 	'Thiếu hụt Kali -K': 'Hãy bổ sung phân bón có chứa kali vào đất.',
+	'Không nhận diện được': 'Hình ảnh bạn chụp không hợp lệ',
 };
 
 // Check if the prediction is in the bad condition list
@@ -78,6 +83,7 @@ uploadButton.addEventListener('click', async () => {
 
 			// Output the server response
 			console.log('File uploaded successfully:', response.data);
+			location.reload();
 		} catch (error) {
 			console.error('Error uploading file:', error);
 		}
@@ -92,6 +98,7 @@ document
 		try {
 			const response = await axios.post('/camera'); // Trigger the route
 			console.log('Camera response:', response.data);
+			location.reload();
 		} catch (error) {
 			console.error('Error capturing picture:', error);
 		}

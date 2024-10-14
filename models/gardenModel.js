@@ -110,6 +110,61 @@ const getLatest5SensorData = async () => {
 };
 
 /**
+ * The function `getAllSensorData` retrieves sensor data from a database and organizes it into separate
+ * arrays based on sensor readings.
+ * @returns The `getAllSensorData` function returns an object containing arrays of sensor data values.
+ * The object includes the following properties:
+ * - `timestamps`: Array of timestamps
+ * - `temperatures`: Array of temperature values
+ * - `humidities`: Array of humidity values
+ * - `soilMoistures`: Array of soil moisture values
+ * - `waterLevel`: Array of water level values
+ */
+const getAllSensorData = async () => {
+	const dbRef = ref(db, 'sensors');
+	const latestQuery = query(dbRef, orderByKey());
+
+	try {
+		const snapshot = await get(latestQuery);
+		if (snapshot.exists()) {
+			const data = snapshot.val();
+
+			// Create arrays to hold the values
+			const temperatures = [];
+			const humidities = [];
+			const soilMoistures = [];
+			const waterLevel = [];
+			const timestamps = [];
+
+			// Extract values and push to the arrays
+			Object.entries(data).forEach(([timestamp, record]) => {
+				if (record.temperature !== undefined)
+					temperatures.push(record.temperature);
+				if (record.humidity !== undefined) humidities.push(record.humidity);
+				if (record.soilMoisture !== undefined)
+					soilMoistures.push(record.soilMoisture);
+				if (record.waterLevel !== undefined) waterLevel.push(record.waterLevel);
+				timestamps.push(timestamp);
+			});
+
+			// Reverse arrays to get the latest values in order
+			return {
+				timestamps: timestamps,
+				temperatures: temperatures,
+				humidities: humidities,
+				soilMoistures: soilMoistures,
+				waterLevel: waterLevel,
+			};
+		} else {
+			throw new Error('No data available');
+		}
+	} catch (error) {
+		console.error('Error retrieving sensor data:', error); // Log detailed error
+		throw error;
+	}
+};
+
+/**
  * The function `getConfigValues` retrieves configuration values from a Firebase database under the
  * 'relay' node.
  * @returns The `getConfigValues` function returns the data fetched from the 'relay' node in Firebase
@@ -346,5 +401,6 @@ module.exports = {
 	updateThresholds,
 	getLatestImage,
 	updateCameraState,
+	getAllSensorData,
 	authModel,
 };

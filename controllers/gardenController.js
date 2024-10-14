@@ -9,6 +9,7 @@ const {
 	updateThresholds,
 	authModel,
 	getLatestImage,
+	getAllSensorData,
 } = require('../models/gardenModel');
 
 const nodemailer = require('nodemailer');
@@ -222,8 +223,8 @@ const authController = {
 const transporter = nodemailer.createTransport({
 	service: 'gmail',
 	auth: {
-		user: 'minhynguyen97@gmail.com', // Replace with your email
-		pass: 'hhli wtvj upau hjlp', // Replace with your email password or app password
+		user: process.env.SENDER_EMAIL_USERNAME, // Replace with your email
+		pass: process.env.SENDER_EMAIL_PASSWORD, // Replace with your email password or app password
 	},
 });
 
@@ -321,7 +322,7 @@ const getPlantHealth = async (req, res) => {
 				pictures: result.url, //Google Storage url
 				filename: result.filename, //8-10-2024-11-04-23
 				predictResult: predictResult.prediction,
-				predictConfidence: 0, //Dont use
+				predictConfidence: predictResult.confidence, //Dont use
 			});
 		} else {
 			res.render('login');
@@ -407,6 +408,17 @@ const setCameraState = async (req, res) => {
 	}
 };
 
+const getHistory = async (req, res) => {
+	try {
+		const result = await getAllSensorData();
+		console.log(result);
+		res.render('history', { result: result });
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({ error: err });
+	}
+};
+
 module.exports = {
 	get5SensorData,
 	showSensorData,
@@ -422,4 +434,5 @@ module.exports = {
 	checkTemperatureAndSendAlert,
 	getPlantHealth,
 	setCameraState,
+	getHistory,
 };

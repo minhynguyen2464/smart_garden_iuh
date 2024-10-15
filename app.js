@@ -26,10 +26,16 @@ app.use(
 app.use('/', gardenRoutes);
 
 // Schedule a task to run every 30 minute
-cron.schedule('*/30 * * * *', async () => {
-	console.log('Running temperature check...');
-	await checkTemperatureAndSendAlert();
-});
+// cron.schedule('*/30 * * * *', async () => {
+// 	console.log('Running temperature check...');
+// 	await checkTemperatureAndSendAlert();
+// });
+
+//1 minute
+// cron.schedule('* * * * *', async () => {
+// 	console.log('Running temperature check...');
+// 	await checkTemperatureAndSendAlert();
+// });
 
 app.listen(3000, () => {
 	console.log('Server is running on port 3000');

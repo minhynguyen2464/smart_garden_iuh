@@ -13,9 +13,10 @@ const {
 } = require('../models/gardenModel');
 
 const nodemailer = require('nodemailer');
-const fs = require('fs');
 const axios = require('axios');
 const FormData = require('form-data');
+const dotenv = require('dotenv');
+dotenv.config();
 
 // Controller to display the latest sensor data
 const showSensorData = async (req, res) => {
@@ -225,6 +226,8 @@ const transporter = nodemailer.createTransport({
 	auth: {
 		user: process.env.SENDER_EMAIL_USERNAME, // Replace with your email
 		pass: process.env.SENDER_EMAIL_PASSWORD, // Replace with your email password or app password
+		// user: 'minhynguyen97@gmail.com', // Replace with your email
+		// pass: 'hhli wtvj upau hjlp', // Replace with your email password or app password
 	},
 });
 
@@ -233,23 +236,29 @@ const sendEmailAlert = async (
 	temperature,
 	humidity,
 	soilMoisture,
-	waterLevel
+	waterLevel,
+	sendStatus
 ) => {
-	const mailOptions = {
-		from: 'minhynguyen97@gmail.com', // Replace with your email
-		to: 'minhynguyen0203@gmail.com', // Replace with recipient email
-		subject: 'CẢNH BÁO NHIỆT ĐỘ!',
-		html: `
+	let mailOptions = {};
+	if (sendStatus === 1) {
+		mailOptions = {
+			from: 'minhynguyen97@gmail.com', // Replace with your email
+			to: 'minhynguyen0203@gmail.com', // Replace with recipient email
+			subject: 'CẢNH BÁO NHIỆT ĐỘ!',
+			html: `
 		<div style="width: 100%; max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
 			<div style="background-color: #f44336; color: white; padding: 10px 15px; text-align: center; border-top-left-radius: 10px; border-top-right-radius: 10px;">
 				<h2>🔥 CẢNH BÁO NHIỆT ĐỘ!</h2>
 			</div>
 			<div style="padding: 20px; text-align: center;">
 				<p style="font-size: 18px; color: #333;">Nhiệt độ trong vườn đang vượt quá mức cho phép</p>
-				<p style="font-size: 16px;">Current temperature: <strong style="color: #e53935; font-size: 22px;">${temperature}°C</strong></p>
 				<hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
 				<h3>Chi tiết cảm biết</h3>
 				<table style="width: 100%; text-align: left; border-collapse: collapse;">
+					<tr>
+						<th style="padding: 10px; border-bottom: 1px solid #ddd;">Nhiệt độ</th>
+						<td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong style="color: #e53935; font-size: 22px;">${temperature}°C</strong></td>
+					</tr>
 					<tr>
 						<th style="padding: 10px; border-bottom: 1px solid #ddd;">Độ ẩm không khí</th>
 						<td style="padding: 10px; border-bottom: 1px solid #ddd;">${humidity}%</td>
@@ -270,7 +279,90 @@ const sendEmailAlert = async (
 			</div>
 		</div>
 		`,
-	};
+		};
+	}
+	if (sendStatus === 2) {
+		mailOptions = {
+			from: 'minhynguyen97@gmail.com', // Replace with your email
+			to: 'minhynguyen0203@gmail.com', // Replace with recipient email
+			subject: 'CẢNH BÁO ĐỘ ẨM ĐẤT!',
+			html: `
+		<div style="width: 100%; max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+			<div style="background-color: #f44336; color: white; padding: 10px 15px; text-align: center; border-top-left-radius: 10px; border-top-right-radius: 10px;">
+				<h2>🌱 CẢNH BÁO ĐỘ ẨM ĐẤT!</h2>
+			</div>
+			<div style="padding: 20px; text-align: center;">
+				<p style="font-size: 18px; color: #333;">Độ ẩm đất trong chậu rau quá thấp, cần xử lý!</p>
+				<hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+				<h3>Chi tiết cảm biết</h3>
+				<table style="width: 100%; text-align: left; border-collapse: collapse;">
+					<tr>
+						<th style="padding: 10px; border-bottom: 1px solid #ddd;">Nhiệt độ</th>
+						<td style="padding: 10px; border-bottom: 1px solid #ddd;">${temperature}°C</td>
+					</tr>
+					<tr>
+						<th style="padding: 10px; border-bottom: 1px solid #ddd;">Độ ẩm không khí</th>
+						<td style="padding: 10px; border-bottom: 1px solid #ddd;">${humidity}%</td>
+					</tr>
+					<tr>
+						<th style="padding: 10px; border-bottom: 1px solid #ddd;">Độ ẩm đất</th>
+						<td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong style="color: #e53935; font-size: 22px;">${soilMoisture}%</strong></td>
+					</tr>
+					<tr>
+						<th style="padding: 10px; border-bottom: 1px solid #ddd;">Mực nước</th>
+						<td style="padding: 10px; border-bottom: 1px solid #ddd;">${waterLevel}%</td>
+					</tr>
+				</table>
+				<p style="font-size: 14px; color: #888; margin-top: 20px;">Hãy chuyển chế độ chăm sóc sang Tự Động hoặc điều khiển Thủ Công!</p>
+			</div>
+			<div style="background-color: #f7f7f7; padding: 10px 15px; text-align: center; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+				<p style="font-size: 12px; color: #777;">Đây là tin nhắn tự động. Không cần hồi âm!</p>
+			</div>
+		</div>
+		`,
+		};
+	}
+	if (sendStatus === 3) {
+		mailOptions = {
+			from: 'minhynguyen97@gmail.com', // Replace with your email
+			to: 'minhynguyen0203@gmail.com', // Replace with recipient email
+			subject: 'CẢNH BÁO ĐỘ MỰC NƯỚC TRONG THÙNG!',
+			html: `
+		<div style="width: 100%; max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+			<div style="background-color: #f44336; color: white; padding: 10px 15px; text-align: center; border-top-left-radius: 10px; border-top-right-radius: 10px;">
+				<h2>💦 CẢNH BÁO ĐỘ MỰC NƯỚC TRONG THÙNG!</h2>
+			</div>
+			<div style="padding: 20px; text-align: center;">
+				<p style="font-size: 18px; color: #333;">Nước trong thùng tưới sắp hết, xin hãy xử lý!</p>
+				<hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+				<h3>Chi tiết cảm biết</h3>
+				<table style="width: 100%; text-align: left; border-collapse: collapse;">
+					<tr>
+						<th style="padding: 10px; border-bottom: 1px solid #ddd;">Nhiệt độ</th>
+						<td style="padding: 10px; border-bottom: 1px solid #ddd;">${temperature}°C</td>
+					</tr>
+					<tr>
+						<th style="padding: 10px; border-bottom: 1px solid #ddd;">Độ ẩm không khí</th>
+						<td style="padding: 10px; border-bottom: 1px solid #ddd;">${humidity}%</td>
+					</tr>
+					<tr>
+						<th style="padding: 10px; border-bottom: 1px solid #ddd;">Độ ẩm đất</th>
+						<td style="padding: 10px; border-bottom: 1px solid #ddd;">${soilMoisture}%</td>
+					</tr>
+					<tr>
+						<th style="padding: 10px; border-bottom: 1px solid #ddd;">Mực nước</th>
+						<td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong style="color: #e53935; font-size: 22px;">${waterLevel}%</strong></td>
+					</tr>
+				</table>
+				<p style="font-size: 14px; color: #888; margin-top: 20px;">Hãy chuyển chế độ chăm sóc sang Tự Động hoặc điều khiển Thủ Công!</p>
+			</div>
+			<div style="background-color: #f7f7f7; padding: 10px 15px; text-align: center; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+				<p style="font-size: 12px; color: #777;">Đây là tin nhắn tự động. Không cần hồi âm!</p>
+			</div>
+		</div>
+		`,
+		};
+	}
 	try {
 		await transporter.sendMail(mailOptions);
 		console.log('Caution email sent successfully!');
@@ -291,11 +383,28 @@ const checkTemperatureAndSendAlert = async () => {
 		const humidity = sensorData.data.humidity;
 		const soilMoisture = sensorData.data.soilMoisture;
 		const waterLevel = sensorData.data.waterLevel;
-		console.log('Temp now is ' + temperature);
+		let sendStatus = 0; //Define 1 for temperature warning, 2 for soil, 3 for water
+		console.log('Checking sensor value & send alert... ');
 		// Check if temperature exceeds threshold
-		if (temperature > 35) {
-			await sendEmailAlert(temperature, humidity, soilMoisture, waterLevel);
+		if (temperature >= 35) {
+			//Temp exceed 35 than send alert
+			sendStatus = 1;
 		}
+		if (soilMoisture <= 40) {
+			//Soil moisture lower than 40% than send alert
+			sendStatus = 2;
+		}
+		if (waterLevel <= 10) {
+			//Water level lower than 10% then send alert
+			sendStatus = 3;
+		}
+		await sendEmailAlert(
+			temperature,
+			humidity,
+			soilMoisture,
+			waterLevel,
+			sendStatus
+		);
 	} catch (error) {
 		console.error('Error in temperature check and alert:', error);
 	}
@@ -411,7 +520,6 @@ const setCameraState = async (req, res) => {
 const getHistory = async (req, res) => {
 	try {
 		const result = await getAllSensorData();
-		console.log(result);
 		res.render('history', { result: result });
 	} catch (err) {
 		console.log(err);

@@ -68,25 +68,10 @@
 			<!-- Sensor Cards -->
 			<div class="container mt-5 col-lg-8">
 				<div class="row mt-4 justify-content-center">
-					<!-- Soil Moisture -->
-					<div class="col-md-4 col-lg-4 mb-4">
-						<div class="card shadow-sm text-center">
-							<div class="card-body">
-								<i class="fas fa-seedling fa-2x mb-2"></i>
-								<h5 class="card-title">Độ ẩm đất</h5>
-								<span class="sensor-info">Cập nhật lần cuối</span>
-								<p id="soilMoisture" class="sensor-value">
-									<%= sensor.data.soilMoisture %>%
-								</p>
-								<span class="sensor-info"><%= sensor.timestamp %></span>
-							</div>
-						</div>
-					</div>
-
 					<!-- Temperature -->
 					<div class="col-md-4 col-lg-4 mb-4">
 						<div class="card shadow-sm text-center">
-							<div class="card-body">
+							<div class="card-body temperature-card">
 								<i class="fas fa-thermometer-half fa-2x mb-2"></i>
 								<h5 class="card-title">Nhiệt độ</h5>
 								<span class="sensor-info">Cập nhật lần cuối</span>
@@ -100,7 +85,7 @@
 
 					<!-- Humidity -->
 					<div class="col-md-4 col-lg-4 mb-4">
-						<div class="card shadow-sm text-center">
+						<div class="card shadow-sm text-center humidity-card">
 							<div class="card-body">
 								<i class="fas fa-tint fa-2x mb-2"></i>
 								<h5 class="card-title">Độ ẩm</h5>
@@ -112,12 +97,9 @@
 							</div>
 						</div>
 					</div>
-
-					<!-- Light Level -->
-
 					<!-- Water Level -->
 					<div class="col-md-4 col-lg-4 mb-4">
-						<div class="card shadow-sm text-center">
+						<div class="card shadow-sm text-center water-card">
 							<div class="card-body">
 								<i class="fas fa-bucket fa-2x mb-2"></i>
 								<h5 class="card-title">Mực nước</h5>
@@ -130,8 +112,23 @@
 						</div>
 					</div>
 
+					<!-- Soil Moisture -->
+					<div class="col-md-8 col-lg-8 mb-4">
+						<div class="card shadow-sm text-center moisture-card">
+							<div class="card-body">
+								<i class="fas fa-seedling fa-2x mb-2"></i>
+								<h5 class="card-title">Độ ẩm đất</h5>
+								<span class="sensor-info">Cập nhật lần cuối</span>
+								<p id="soilMoisture" class="sensor-value">
+									<%= sensor.data.soilMoisture %>%
+								</p>
+								<span class="sensor-info"><%= sensor.timestamp %></span>
+							</div>
+						</div>
+					</div>
+
 					<div class="col-md-4 col-lg-4 mb-4">
-						<div class="card shadow-sm text-center">
+						<div class="card shadow-sm text-center config-card">
 							<div class="card-body">
 								<i class="fas fa-gears fa-2x mb-2"></i>
 								<h5 class="card-title">Chế độ chăm sóc</h5>

@@ -319,7 +319,7 @@ const authModel = {
 /**
  * Function to get the latest image from Firebase Storage
  * Assumes filenames follow the format 'day-month-year-hour-minute-second.png'
- * @returns {Promise<string>} - The public URL of the latest image
+ * @returns {Promise<{filename: *, url: string}>} - The public URL of the latest image
  * @throws {Error} - Throws an error if image retrieval fails
  */
 const getLatestImage = async () => {

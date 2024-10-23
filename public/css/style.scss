@@ -168,32 +168,34 @@ input:checked + .slider:before {
 	font-size: 1rem; /* Slightly smaller font size for supplementary info */
 }
 
+$white-color: #ffffff;
+
 .temperature-card {
 	background-color: #ffa500;
-	color: #ffffff;
+	color: $white-color;
 	border-radius: 10px;
 }
 
 .humidity-card {
 	background-color: #87cefa;
-	color: #ffffff;
+	color: $white-color;
 	border-radius: 10px;
 }
 
 .water-card {
 	background-color: #1e90ff;
-	color: #ffffff;
+	color: $white-color;
 	border-radius: 10px;
 }
 
 .moisture-card {
 	background-color: #006400;
-	color: #ffffff;
+	color: $white-color;
 	border-radius: 10px;
 }
 
 .config-card {
 	background-color: #808080;
-	color: #ffffff;
+	color: $white-color;
 	border-radius: 10px;
 }

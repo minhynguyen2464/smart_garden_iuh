@@ -24,43 +24,59 @@ function formatToPercentage(value, decimalPlaces = 0) {
 	return `${percentage}%`;
 }
 
-const healthConfidence = document.getElementById('healthConfidence');
-const formatConfidenceValue = formatToPercentage(healthConfidence.innerHTML);
-healthConfidence.innerHTML = formatConfidenceValue;
+const adviceText = document.getElementById('advice');
 
-const healthPrediction = document.getElementById('healthResult');
-// List of health issues that should trigger the red color
-const unhealthyConditions = [
-	'Thiếu hụt Kali -K',
-	'Thiếu hụt Nito N-',
-	'Thiếu hụt photpho -P',
-	'Không nhận diện được',
-];
-
-// Check if the innerHTML matches any of the unhealthy conditions
-if (unhealthyConditions.includes(healthPrediction.innerHTML)) {
-	healthPrediction.style.color = 'red'; // Set text color to red if unhealthy
-} else {
-	healthPrediction.style.color = 'green'; // Set text color to green if healthy
-}
-
-const adviceTextBox = document.getElementById('advice');
-
-// List of conditions and their corresponding advice
 const adviceMapping = {
-	'Thiếu hụt Nito N-': 'Hãy đảm bảo cây được bón đạm thích hợp.',
-	'Thiếu hụt photpho -P': 'Hãy sử dụng các loại phân bón giàu phốt pho.',
-	'Thiếu hụt Kali -K': 'Hãy bổ sung phân bón có chứa kali vào đất.',
-	'Không nhận diện được': 'Hình ảnh bạn chụp không hợp lệ',
+	'nito-btn': 'Hãy đảm bảo cây được bón đạm thích hợp',
+	'photpho-btn': 'Hãy sử dụng các loại phân bón giàu phốt pho.',
+	'kali-btn': 'Hãy bổ sung phân bón có chứa kali vào đất.',
 };
 
-// Check if the prediction is in the bad condition list
-if (adviceMapping[healthPrediction.innerHTML]) {
-	adviceTextBox.innerHTML = adviceMapping[healthPrediction.innerHTML]; // Display the corresponding advice
-} else {
-	adviceTextBox.innerHTML =
-		'Rau của bạn đang khỏe mạnh! Không cần phải bổ sung gì thêm.'; // Default for good condition
-}
+Object.keys(adviceMapping).forEach((buttonId) => {
+	const button = document.getElementById(buttonId);
+	button.addEventListener('click', () => {
+		adviceText.innerText = adviceMapping[buttonId];
+		adviceText.style.color = 'red';
+	});
+});
+
+// const healthConfidence = document.getElementById('healthConfidence');
+// const formatConfidenceValue = formatToPercentage(healthConfidence.innerHTML);
+// healthConfidence.innerHTML = formatConfidenceValue;
+
+// const healthPrediction = document.getElementById('healthResult');
+// // List of health issues that should trigger the red color
+// const unhealthyConditions = [
+// 	'Thiếu hụt Kali -K',
+// 	'Thiếu hụt Nito N-',
+// 	'Thiếu hụt photpho -P',
+// 	'Không nhận diện được',
+// ];
+
+// // Check if the innerHTML matches any of the unhealthy conditions
+// if (unhealthyConditions.includes(healthPrediction.innerHTML)) {
+// 	healthPrediction.style.color = 'red'; // Set text color to red if unhealthy
+// } else {
+// 	healthPrediction.style.color = 'green'; // Set text color to green if healthy
+// }
+
+// const adviceTextBox = document.getElementById('advice');
+
+// // List of conditions and their corresponding advice
+// const adviceMapping = {
+// 	'Thiếu hụt Nito N-': 'Hãy đảm bảo cây được bón đạm thích hợp.',
+// 	'Thiếu hụt photpho -P': 'Hãy sử dụng các loại phân bón giàu phốt pho.',
+// 	'Thiếu hụt Kali -K': 'Hãy bổ sung phân bón có chứa kali vào đất.',
+// 	'Không nhận diện được': 'Hình ảnh bạn chụp không hợp lệ',
+// };
+
+// // Check if the prediction is in the bad condition list
+// if (adviceMapping[healthPrediction.innerHTML]) {
+// 	adviceTextBox.innerHTML = adviceMapping[healthPrediction.innerHTML]; // Display the corresponding advice
+// } else {
+// 	adviceTextBox.innerHTML =
+// 		'Rau của bạn đang khỏe mạnh! Không cần phải bổ sung gì thêm.'; // Default for good condition
+// }
 
 const uploadButton = document.getElementById('uploadPicture');
 const fileInput = document.getElementById('fileInput');

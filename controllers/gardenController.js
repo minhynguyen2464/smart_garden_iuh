@@ -24,8 +24,7 @@ const showSensorData = async (req, res) => {
 		if (req.session.username === 'admin') {
 			const sensorData = await getLatestSensorData();
 			// Format the timestamp
-			const formattedTimestamp = formatDate(sensorData.timestamp);
-			sensorData.timestamp = formattedTimestamp;
+			sensorData.timestamp = formatDate(sensorData.timestamp);
 			res.render('index', { sensor: sensorData });
 		} else {
 			res.render('login');
@@ -39,8 +38,7 @@ const showSensorData = async (req, res) => {
 const getSensorData = async (req, res) => {
 	try {
 		const sensorData = await getLatestSensorData();
-		const formattedTimestamp = formatDate(sensorData.timestamp);
-		sensorData.timestamp = formattedTimestamp;
+		sensorData.timestamp = formatDate(sensorData.timestamp);
 
 		res.json(sensorData); // Send sensor data as JSON
 	} catch (error) {
@@ -424,14 +422,14 @@ const checkTemperatureAndSendAlert = async () => {
 const getPlantHealth = async (req, res) => {
 	try {
 		if (req.session.username === 'admin') {
-			let result = await getLatestImage();
+			let latestImage = await getLatestImage();
 			//let predictResult = await loadModelAndPredict(result.url);
-			let predictResult = await loadModelAndPredict(result.url);
+			let predictResult = await getPrediction(latestImage.url, latestImage.filename);
 			res.render('health', {
-				pictures: result.url, //Google Storage url
-				filename: result.filename, //8-10-2024-11-04-23
-				predictResult: predictResult.prediction,
-				predictConfidence: predictResult.confidence, //Dont use
+				pictures: predictResult.image_url, //Google Storage url
+				filename: latestImage.filename, //8-10-2024-11-04-23
+				predictResult: 0,
+				predictConfidence: 0, //Dont use
 			});
 		} else {
 			res.render('login');
@@ -453,7 +451,7 @@ const getPlantHealth = async (req, res) => {
  * Flask server after processing the image provided in the `imageUrl`. If there is an error during the
  * process, it will log the error message to the console.
  */
-const getPrediction = async (imageUrl) => {
+const getPrediction = async (imageUrl, imageName) => {
 	try {
 		// Fetch the image from the URL
 		const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
@@ -463,8 +461,8 @@ const getPrediction = async (imageUrl) => {
 
 		// Prepare form-data for the request
 		const form = new FormData();
-		form.append('image', imageBuffer, { filename: 'image.jpg' }); // Provide a filename
-
+		form.append('image', imageBuffer, { filename: imageName }); // Provide a filename
+		form.append('imageName',imageName);
 		// Send POST request to the Python Flask server
 		const apiResponse = await axios.post(
 			'http://localhost:5000/predict',
@@ -473,14 +471,6 @@ const getPrediction = async (imageUrl) => {
 				headers: form.getHeaders(),
 			}
 		);
-
-		// const apiResponse = await axios.post(
-		// 	'http://lettuce-detection-1.onrender.com:10000/predict',
-		// 	form,
-		// 	{
-		// 		headers: form.getHeaders(),
-		// 	}
-		// );
 
 		// Output the prediction
 		const result = apiResponse.data;
@@ -499,9 +489,8 @@ const getPrediction = async (imageUrl) => {
  * image specified by the `urlPath`.
  */
 const loadModelAndPredict = async (urlPath) => {
-	const imageUrl = urlPath; // Replace with actual image URL
-	const result = await getPrediction(imageUrl);
-	return result;
+	 // Replace with actual image URL
+	return await getPrediction(urlPath);
 };
 
 // Controller to handle updating the water pump state

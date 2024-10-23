@@ -67,7 +67,7 @@
 				Smart Garden Sức Khỏe Cây Trồng <i class="fa-solid fa-heart"></i>
 			</h1>
 			<div class="row justify-content-center">
-				<div class="col-lg-4 text-center">
+				<div class="col-lg-6 text-center">
 					<img src="<%= pictures %>" alt="" width="100%" id="plant-picture" />
 					<br />
 					<p>Hình ảnh của cây trồng</p>
@@ -78,15 +78,25 @@
 					<p id="filename" style="display: none"><%= filename %></p>
 					<p>Ngày: <span id="day">5/10/2024</span></p>
 					<p>Giờ: <span id="hour">2:57PM</span></p>
-					<p>
-						Dự đoán:
-						<span id="healthResult"><%= predictResult %></span>
-					</p>
-					<p>
-						Độ tin cậy:
-						<span id="healthConfidence"><%= predictConfidence %></span>
-					</p>
-					<p>Hướng dẫn: <span id="advice"></span></p>
+					<div class="row">
+						<div class="col-xl-5"><p>Hướng dẫn:</p></div>
+						<div class="col-xl-2">
+							<button type="button" class="btn btn-primary" id="nito-btn">
+								-N
+							</button>
+						</div>
+						<div class="col-xl-2">
+							<button type="button" class="btn btn-success" id="photpho-btn">
+								-P
+							</button>
+						</div>
+						<div class="col-xl-2">
+							<button type="button" class="btn btn-warning" id="kali-btn">
+								-K
+							</button>
+						</div>
+					</div>
+					<p><span id="advice"></span></p>
 					<hr />
 					<div class="text-center">
 						<button class="text-center btn btn-success" id="capturePicture">
@@ -97,7 +107,7 @@
 							id="countdownNotification"
 							style="
 								display: none;
-								background-color: 2e7d32;
+								background-color: #2e7d32;
 								border: 1px solid black;
 								margin-top: 10px;
 							"

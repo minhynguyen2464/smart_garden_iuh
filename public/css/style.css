@@ -174,7 +174,7 @@ input:checked + .slider:before {
 }
 
 .humidity-card {
-  background-color: #87cefa;
+  background-color: #ba00e8;
   color: #ffffff;
   border-radius: 10px;
 }
@@ -186,7 +186,7 @@ input:checked + .slider:before {
 }
 
 .moisture-card {
-  background-color: #006400;
+  background-color: #00a100;
   color: #ffffff;
   border-radius: 10px;
 }

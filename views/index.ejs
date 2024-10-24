@@ -99,13 +99,13 @@
 					</div>
 					<!-- Water Level -->
 					<div class="col-md-4 col-lg-4 mb-4">
-						<div class="card shadow-sm text-center water-card">
+						<div class="card shadow-sm text-center moisture-card">
 							<div class="card-body">
-								<i class="fas fa-bucket fa-2x mb-2"></i>
-								<h5 class="card-title">Mực nước</h5>
+								<i class="fas fa-seedling fa-2x mb-2"></i>
+								<h5 class="card-title">Độ ẩm đất</h5>
 								<span class="sensor-info">Cập nhật lần cuối</span>
-								<p id="waterLevel" class="sensor-value">
-									<%= sensor.data.waterLevel %>%
+								<p id="soilMoisture" class="sensor-value">
+									<%= sensor.data.soilMoisture %>%
 								</p>
 								<span class="sensor-info"><%= sensor.timestamp %></span>
 							</div>
@@ -114,13 +114,13 @@
 
 					<!-- Soil Moisture -->
 					<div class="col-md-8 col-lg-8 mb-4">
-						<div class="card shadow-sm text-center moisture-card">
+						<div class="card shadow-sm text-center water-card">
 							<div class="card-body">
-								<i class="fas fa-seedling fa-2x mb-2"></i>
-								<h5 class="card-title">Độ ẩm đất</h5>
+								<i class="fas fa-bucket fa-2x mb-2"></i>
+								<h5 class="card-title">Mực nước</h5>
 								<span class="sensor-info">Cập nhật lần cuối</span>
-								<p id="soilMoisture" class="sensor-value">
-									<%= sensor.data.soilMoisture %>%
+								<p id="waterLevel" class="sensor-value">
+									<%= sensor.data.waterLevel %>%
 								</p>
 								<span class="sensor-info"><%= sensor.timestamp %></span>
 							</div>

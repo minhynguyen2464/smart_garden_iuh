@@ -18,6 +18,8 @@ const {
 	authController,
 	setCameraState,
 	getHistory,
+	getPrediction,
+	postPrediction,
 } = require('../controllers/gardenController');
 
 const router = express.Router();
@@ -97,4 +99,6 @@ router.post('/upload', upload.single('file'), async (req, res) => {
 router.post('/camera', setCameraState);
 
 router.get('/history', getHistory);
+
+router.post('/postDetection', postPrediction);
 module.exports = router;

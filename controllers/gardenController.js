@@ -229,7 +229,22 @@ const transporter = nodemailer.createTransport({
 	},
 });
 
-// Function to send an email alert
+/**
+ * The function `sendEmailAlert` sends email alerts based on different sensor readings and alert
+ * statuses.
+ * @param temperature - The temperature value in degrees Celsius.
+ * @param humidity - Humidity is the amount of water vapor present in the air. It is typically
+ * expressed as a percentage and represents the relative humidity level in the environment. High
+ * humidity levels can make the air feel damp and uncomfortable, while low humidity levels can lead to
+ * dry skin and respiratory issues. Maintaining an optimal humidity
+ * @param soilMoisture - Soil moisture level in percentage
+ * @param waterLevel - The `waterLevel` parameter in the `sendEmailAlert` function represents the
+ * current water level in a specific context, such as a water tank or reservoir. It is used to monitor
+ * the amount of water available for irrigation or other purposes in a system. The function sends an
+ * email alert based on different
+ * @param sendStatus - The `sendStatus` parameter in the `sendEmailAlert` function is used to determine
+ * the type of alert email to be sent based on different scenarios. It can have the following values:
+ */
 const sendEmailAlert = async (
 	temperature,
 	humidity,
@@ -371,8 +386,9 @@ const sendEmailAlert = async (
 
 // Controller function to check temperature and send email
 /**
- * The function `checkTemperatureAndSendAlert` asynchronously retrieves the latest sensor data and
- * sends an email alert if the temperature exceeds a threshold.
+ * The function `checkTemperatureAndSendAlert` asynchronously retrieves sensor data, checks for
+ * temperature, soil moisture, and water level thresholds, and sends an email alert based on the
+ * status.
  */
 const checkTemperatureAndSendAlert = async () => {
 	try {
@@ -421,12 +437,22 @@ const checkTemperatureAndSendAlert = async () => {
  */
 const getPlantHealth = async (req, res) => {
 	try {
-		if (req.session.username === 'admin') {
+		if (/*req.session.username === 'admin'*/ true) {
+			// let latestImage = await getLatestImage();
+			// let predictResult = await getPrediction(
+			// 	latestImage.url,
+			// 	latestImage.filename
+			// );
+			// res.render('health', {
+			// 	pictures: predictResult.image_url, //Google Storage url
+			// 	filename: latestImage.filename, //8-10-2024-11-04-23
+			// 	predictResult: 0,
+			// 	predictConfidence: 0, //Dont use
+			// });
+
 			let latestImage = await getLatestImage();
-			//let predictResult = await loadModelAndPredict(result.url);
-			let predictResult = await getPrediction(latestImage.url, latestImage.filename);
 			res.render('health', {
-				pictures: predictResult.image_url, //Google Storage url
+				pictures: latestImage.url, //Google Storage url
 				filename: latestImage.filename, //8-10-2024-11-04-23
 				predictResult: 0,
 				predictConfidence: 0, //Dont use
@@ -451,18 +477,21 @@ const getPlantHealth = async (req, res) => {
  * Flask server after processing the image provided in the `imageUrl`. If there is an error during the
  * process, it will log the error message to the console.
  */
-const getPrediction = async (imageUrl, imageName) => {
+const postPrediction = async (req, res) => {
 	try {
+		const { pictureName, pictureUrl } = req.body;
 		// Fetch the image from the URL
-		const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+		const response = await axios.get(pictureUrl, {
+			responseType: 'arraybuffer',
+		});
 
 		// Convert the image to a buffer
 		const imageBuffer = Buffer.from(response.data, 'binary');
 
 		// Prepare form-data for the request
 		const form = new FormData();
-		form.append('image', imageBuffer, { filename: imageName }); // Provide a filename
-		form.append('imageName',imageName);
+		form.append('image', imageBuffer, { filename: pictureName }); // Provide a filename
+		form.append('imageName', pictureName);
 		// Send POST request to the Python Flask server
 		const apiResponse = await axios.post(
 			'http://localhost:5000/predict',
@@ -471,26 +500,12 @@ const getPrediction = async (imageUrl, imageName) => {
 				headers: form.getHeaders(),
 			}
 		);
-
+		console.log(apiResponse.data);
 		// Output the prediction
-		const result = apiResponse.data;
-		return result;
+		res.status(200).json({ success: true, message: apiResponse.data });
 	} catch (error) {
 		console.error('Error calling Python API:', error);
 	}
-};
-
-/**
- * The function `loadModelAndPredict` asynchronously loads a model and predicts using an image URL
- * provided as input.
- * @param urlPath - The `urlPath` parameter in the `loadModelAndPredict` function is a string that
- * represents the URL path of an image that will be used for prediction.
- * @returns The function `loadModelAndPredict` is returning the result of the prediction made on the
- * image specified by the `urlPath`.
- */
-const loadModelAndPredict = async (urlPath) => {
-	 // Replace with actual image URL
-	return await getPrediction(urlPath);
 };
 
 // Controller to handle updating the water pump state
@@ -530,6 +545,7 @@ module.exports = {
 	authController,
 	checkTemperatureAndSendAlert,
 	getPlantHealth,
+	postPrediction,
 	setCameraState,
 	getHistory,
 };

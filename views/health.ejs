@@ -67,7 +67,7 @@
 				Smart Garden Sức Khỏe Cây Trồng <i class="fa-solid fa-heart"></i>
 			</h1>
 			<div class="row justify-content-center">
-				<div class="col-lg-6 text-center">
+				<div class="col-lg-4 text-center">
 					<img src="<%= pictures %>" alt="" width="100%" id="plant-picture" />
 					<br />
 					<p>Hình ảnh của cây trồng</p>
@@ -100,7 +100,7 @@
 					<hr />
 					<div class="text-center">
 						<button class="text-center btn btn-success" id="capturePicture">
-							Chụp hình
+							Chụp hình trực tiếp
 						</button>
 						<!-- Notification Div -->
 						<div
@@ -118,8 +118,13 @@
 						<hr />
 						<input type="file" id="fileInput" accept="image/*" />
 						<button class="btn btn-success" id="uploadPicture">
-							Up file hình
+							Upload file
 						</button>
+						<hr />
+						<button type="button" class="btn btn-danger" id="runDetectBtn">
+							Chạy chuẩn đoán
+						</button>
+						<p><span id="detectNofitication"></span></p>
 					</div>
 				</div>
 			</div>

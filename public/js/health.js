@@ -1,9 +1,8 @@
 const fileElement = document.getElementById('filename'); // Ensure this is properly escaped
 const fileName = fileElement.getHTML();
-
+const fileUrl = document.getElementById('plant-picture').getAttribute('src');
 // Extract the filename without the path
 const filename = fileName.split('/').pop(); // '5-10-2024-15-40-58.png'
-
 // Remove the .png extension
 const strippedFilename = filename.replace('.png', ''); // '5-10-2024-15-40-58'
 
@@ -144,4 +143,43 @@ document
 				notificationDiv.style.display = 'none';
 			}
 		}, 1000);
+	});
+
+const detectNotification = document.getElementById('detectNofitication');
+document
+	.getElementById('runDetectBtn')
+	.addEventListener('click', async (pictureName, pictureUrl) => {
+		try {
+			pictureName = fileName;
+			pictureUrl = fileUrl;
+			detectNotification.style.color = 'red';
+			let counter = 0;
+			detectNotification.innerText = `Đang chạy chuẩn đoán vui lòng đợi... ${counter}s`;
+
+			// Start the timer
+			const timer = setInterval(() => {
+				counter++;
+				detectNotification.innerText = `Đang chạy chuẩn đoán vui lòng đợi... ${counter}s`;
+			}, 1000);
+			// Get today's date and time
+			const res = await axios.post('/postDetection', {
+				pictureName,
+				pictureUrl,
+			});
+			if (res.data.success) {
+				// Stop the timer
+				clearInterval(timer);
+				const result = res.data;
+				detectNotification.innerText = '';
+				document
+					.getElementById('plant-picture')
+					.setAttribute('src', result.message.image_url);
+			} else {
+				console.log(res.data);
+				alert('Failed ' + res.data.message);
+			}
+		} catch (err) {
+			console.log(err);
+			alert('Running detection failed, please check again');
+		}
 	});

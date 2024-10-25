@@ -477,29 +477,45 @@ const getPlantHealth = async (req, res) => {
  * Flask server after processing the image provided in the `imageUrl`. If there is an error during the
  * process, it will log the error message to the console.
  */
+// const postPrediction = async (req, res) => {
+// 	try {
+// 		const { pictureName, pictureUrl } = req.body;
+// 		// Fetch the image from the URL
+// 		const response = await axios.get(pictureUrl, {
+// 			responseType: 'arraybuffer',
+// 		});
+
+// 		// Convert the image to a buffer
+// 		const imageBuffer = Buffer.from(response.data, 'binary');
+
+// 		// Prepare form-data for the request
+// 		const form = new FormData();
+// 		form.append('image', imageBuffer, { filename: pictureName }); // Provide a filename
+// 		form.append('imageName', pictureName);
+// 		// Send POST request to the Python Flask server
+// 		const apiResponse = await axios.post(
+// 			'http://localhost:5000/predict',
+// 			form,
+// 			{
+// 				headers: form.getHeaders(),
+// 			}
+// 		);
+// 		console.log(apiResponse.data);
+// 		// Output the prediction
+// 		res.status(200).json({ success: true, message: apiResponse.data });
+// 	} catch (error) {
+// 		console.error('Error calling Python API:', error);
+// 	}
+// };
+
 const postPrediction = async (req, res) => {
 	try {
 		const { pictureName, pictureUrl } = req.body;
-		// Fetch the image from the URL
-		const response = await axios.get(pictureUrl, {
-			responseType: 'arraybuffer',
-		});
-
-		// Convert the image to a buffer
-		const imageBuffer = Buffer.from(response.data, 'binary');
-
-		// Prepare form-data for the request
-		const form = new FormData();
-		form.append('image', imageBuffer, { filename: pictureName }); // Provide a filename
-		form.append('imageName', pictureName);
 		// Send POST request to the Python Flask server
-		const apiResponse = await axios.post(
-			'http://localhost:5000/predict',
-			form,
-			{
-				headers: form.getHeaders(),
-			}
-		);
+		const apiResponse = await axios.post('http://localhost:5000/predict', {
+			imageUrl: pictureUrl,
+			imageName: pictureName,
+		});
 		console.log(apiResponse.data);
 		// Output the prediction
 		res.status(200).json({ success: true, message: apiResponse.data });

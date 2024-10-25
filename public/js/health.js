@@ -153,7 +153,7 @@ document
 			pictureName = fileName;
 			pictureUrl = fileUrl;
 			detectNotification.style.color = 'red';
-			let counter = 0;
+			let counter = 1;
 			detectNotification.innerText = `Đang chạy chuẩn đoán vui lòng đợi... ${counter}s`;
 
 			// Start the timer

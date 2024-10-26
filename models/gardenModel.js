@@ -238,6 +238,13 @@ const updateWaterPumpState = async (waterPumpState) => {
 	}
 };
 
+/**
+ * The function `updateCameraState` sets the camera state to 1, waits for 5 seconds, and then sets the
+ * camera state back to 0 in Firebase.
+ * @returns The function `updateCameraState` returns an object with a message property indicating that
+ * the camera was triggered successfully. The object returned looks like this: `{ message: 'Camera was
+ * triggered successfully' }`.
+ */
 const updateCameraState = async () => {
 	const cameraRef = ref(db, 'relay/camera'); // Reference to 'relay/camera' in Firebase
 

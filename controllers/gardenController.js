@@ -18,7 +18,17 @@ const FormData = require('form-data');
 const dotenv = require('dotenv');
 dotenv.config();
 
-// Controller to display the latest sensor data
+/**
+ * The function `showSensorData` checks if the user is an admin, retrieves the latest sensor data,
+ * formats the timestamp, and renders the data on the index page or redirects to the login page.
+ * @param req - The `req` parameter in the `showSensorData` function typically represents the request
+ * object, which contains information about the HTTP request that triggered the function. This object
+ * includes properties such as headers, parameters, query strings, and the request body. It is commonly
+ * used to access data sent from the client
+ * @param res - The `res` parameter in the `showSensorData` function is typically the response object
+ * in Node.js/Express. It is used to send a response back to the client making the request. In this
+ * function, `res` is used to render different views based on the conditions checked in the code
+ */
 const showSensorData = async (req, res) => {
 	try {
 		if (req.session.username === 'admin') {
@@ -34,7 +44,19 @@ const showSensorData = async (req, res) => {
 	}
 };
 
-// Controller to get the latest sensor data in JSON format
+/**
+ * The function `getSensorData` asynchronously retrieves the latest sensor data, formats the timestamp,
+ * and sends the data as JSON, handling errors by returning an error message as JSON with a 500 status
+ * code.
+ * @param req - The `req` parameter in the `getSensorData` function typically represents the request
+ * object, which contains information about the HTTP request that triggered the function. This object
+ * includes properties such as headers, parameters, body content, and more, depending on the type of
+ * request being made (e.g., GET
+ * @param res - The `res` parameter in the `getSensorData` function is the response object that
+ * represents the HTTP response that an Express.js route handler sends when it receives an HTTP
+ * request. It is used to send data back to the client making the request. In this case, the `res`
+ * object is
+ */
 const getSensorData = async (req, res) => {
 	try {
 		const sensorData = await getLatestSensorData();
@@ -46,7 +68,17 @@ const getSensorData = async (req, res) => {
 	}
 };
 
-// Controller to create new sensor data
+/**
+ * The function `createSensorData` saves sensor data with moisture, temperature, and timestamp to a
+ * database and returns a success message or an error message.
+ * @param req - The `req` parameter in the `createSensorData` function typically represents the HTTP
+ * request object, which contains information about the incoming request from the client, such as
+ * headers, parameters, body content, and more. In this specific function, `req` is used to extract the
+ * sensorId, moisture
+ * @param res - The `res` parameter in the `createSensorData` function is the response object that will
+ * be used to send a response back to the client making the request. It is typically used to set the
+ * HTTP status code and send data back to the client in the form of JSON or other formats.
+ */
 const createSensorData = async (req, res) => {
 	try {
 		const { sensorId, moisture, temperature } = req.body;
@@ -58,7 +90,16 @@ const createSensorData = async (req, res) => {
 	}
 };
 
-// Helper function to format timestamp
+/**
+ * The `formatDate` function takes a timestamp string in the format "YYYY-MM-DD HH:MM:SS" and returns a
+ * formatted date string in the format "DD-MM-YYYY HH:MM:SS".
+ * @param timestamp - The `formatDate` function takes a timestamp as input, which is a string in the
+ * format "YYYY-MM-DD HH:MM:SS" representing a date and time. The function then formats this timestamp
+ * into a more readable format with leading zeros for single-digit values.
+ * @returns The `formatDate` function takes a timestamp as input, splits it into date and time parts,
+ * formats the date and time components with leading zeros if necessary, and then returns a formatted
+ * date string in the format "DD-MM-YYYY HH:mm:ss".
+ */
 const formatDate = (timestamp) => {
 	// Split the date and time parts
 	const [dateString, timeString] = timestamp.split(' ');
@@ -79,7 +120,16 @@ const formatDate = (timestamp) => {
 	return `${dayFormatted}-${monthFormatted}-${yearFormatted} ${hourFormatted}:${minuteFormatted}:${secondFormatted}`;
 };
 
-// Controller to get the latest 5 sensor data points
+/**
+ * The function `get5SensorData` retrieves the latest 5 sensor data entries and sends them as JSON,
+ * handling errors by logging detailed errors and returning error messages as JSON.
+ * @param req - `req` is the request object representing the HTTP request made to the server. It
+ * contains information about the request such as the headers, parameters, body, and more. In this
+ * context, `req` is used to receive incoming data from the client making the request.
+ * @param res - The `res` parameter in the `get5SensorData` function is the response object that is
+ * used to send a response back to the client making the request. In this case, the function is sending
+ * the sensor data as JSON using `res.json(sensorData)` when the data is successfully retrieved.
+ */
 const get5SensorData = async (req, res) => {
 	try {
 		const sensorData = await getLatest5SensorData();
@@ -91,11 +141,17 @@ const get5SensorData = async (req, res) => {
 	}
 };
 
-/*
-	This is the settings page controller
-*/
-
-// Controller to fetch and render smart garden settings
+/**
+ * The function `getSmartGardenSettings` retrieves configuration values for a smart garden system and
+ * renders the settings page if the user is an admin, otherwise it renders the login page.
+ * @param req - `req` is the request object representing the HTTP request made by the client to the
+ * server. It contains information about the request such as the URL, headers, parameters, and session
+ * data. In this code snippet, `req.session.username` is used to check if the user is logged in as an
+ * @param res - The `res` parameter in the `getSmartGardenSettings` function is the response object
+ * that will be sent back to the client making the request. It is used to send a response containing
+ * the rendered settings page with the specified configuration values or to render the login page if
+ * the user is not authenticated
+ */
 const getSmartGardenSettings = async (req, res) => {
 	try {
 		if (req.session.username === 'admin') {
@@ -127,7 +183,17 @@ const getSmartGardenSettings = async (req, res) => {
 	}
 };
 
-// Controller to handle the update of auto mode
+/**
+ * The function `updateAutoMode` updates the auto mode using the value from the request body and
+ * returns the result as a JSON response.
+ * @param req - The `req` parameter in the `updateAutoMode` function typically represents the HTTP
+ * request object, which contains information about the incoming request from the client, such as the
+ * request headers, parameters, body, and other relevant data. In this specific context, it is being
+ * used to extract the `auto
+ * @param res - The `res` parameter in the `updateAutoMode` function is the response object that will
+ * be used to send a response back to the client making the request. It is typically used to set the
+ * status code and send data back in the response.
+ */
 const updateAutoMode = async (req, res) => {
 	try {
 		const { autoMode } = req.body;
@@ -138,7 +204,17 @@ const updateAutoMode = async (req, res) => {
 	}
 };
 
-// Controller to handle updating the fan state
+/**
+ * The function `setFanState` asynchronously updates the state of a fan based on the request body and
+ * sends back the result or an error message.
+ * @param req - The `req` parameter in the `setFanState` function typically represents the request
+ * object in a Node.js application. It contains information about the incoming HTTP request such as
+ * headers, parameters, body, etc. In this specific function, it is expecting a `state` property to be
+ * present in the
+ * @param res - The `res` parameter in the `setFanState` function is the response object that will be
+ * used to send a response back to the client making the request. It is typically used to set the
+ * status code and send data back in the response.
+ */
 const setFanState = async (req, res) => {
 	const { state } = req.body; // Expecting fanState to be sent in the request body
 
@@ -150,7 +226,17 @@ const setFanState = async (req, res) => {
 	}
 };
 
-// Controller to handle updating the water pump state
+/**
+ * The function `setWaterPumpState` asynchronously updates the state of a water pump based on the
+ * request body and sends back the result or an error message.
+ * @param req - The `req` parameter in the `setWaterPumpState` function typically represents the
+ * request object in a Node.js application. It contains information about the HTTP request that
+ * triggered the function, including headers, parameters, body content, and more. In this specific
+ * function, it is expecting a `state
+ * @param res - The `res` parameter in the `setWaterPumpState` function is the response object that
+ * will be used to send a response back to the client making the request. It is typically used to set
+ * the status code and send data or error messages back to the client.
+ */
 const setWaterPumpState = async (req, res) => {
 	const { state } = req.body; // Expecting 'state' to be sent in the request body
 
@@ -163,7 +249,17 @@ const setWaterPumpState = async (req, res) => {
 	}
 };
 
-// Controller to save updated threshold values
+/**
+ * The function `saveThresholds` updates temperature, humidity, and soil moisture thresholds based on
+ * the request body and returns the new values in a JSON response.
+ * @param req - The `req` parameter in the `saveThresholds` function is typically an object
+ * representing the HTTP request. It contains information about the request made to the server, such as
+ * the request headers, body, parameters, and more. In this specific function, `req.body` is used to
+ * extract the
+ * @param res - The `res` parameter in the `saveThresholds` function is the response object that will
+ * be sent back to the client making the request. It is used to send a response back to the client with
+ * the updated threshold values or an error message in case of any issues during the update process.
+ */
 const saveThresholds = async (req, res) => {
 	const { temperatureThreshold, humidityThreshold, soilMoistureThreshold } =
 		req.body;
@@ -186,7 +282,17 @@ const saveThresholds = async (req, res) => {
 	}
 };
 
-// Controller to render the login page
+/**
+ * The function `getLogin` renders a login page and handles errors by logging them and sending an
+ * internal server error response.
+ * @param req - The `req` parameter in the `getLogin` function typically represents the request object,
+ * which contains information about the HTTP request that is being made. This object includes
+ * properties such as the request headers, parameters, body, URL, and more. It is commonly used to
+ * access data sent from the client
+ * @param res - The `res` parameter in the `getLogin` function is the response object that represents
+ * the HTTP response that an Express app sends when it receives an HTTP request. It is used to send a
+ * response back to the client making the request. In this case, the `res` object is used to
+ */
 const getLogin = async (req, res) => {
 	try {
 		res.render('login');
@@ -438,18 +544,6 @@ const checkTemperatureAndSendAlert = async () => {
 const getPlantHealth = async (req, res) => {
 	try {
 		if (/*req.session.username === 'admin'*/ true) {
-			// let latestImage = await getLatestImage();
-			// let predictResult = await getPrediction(
-			// 	latestImage.url,
-			// 	latestImage.filename
-			// );
-			// res.render('health', {
-			// 	pictures: predictResult.image_url, //Google Storage url
-			// 	filename: latestImage.filename, //8-10-2024-11-04-23
-			// 	predictResult: 0,
-			// 	predictConfidence: 0, //Dont use
-			// });
-
 			let latestImage = await getLatestImage();
 			res.render('health', {
 				pictures: latestImage.url, //Google Storage url
@@ -508,23 +602,81 @@ const getPlantHealth = async (req, res) => {
 // 	}
 // };
 
+/**
+ * The function `postPrediction` sends a POST request to a Python Flask server with image data and
+ * returns the prediction result.
+ * @param req - The `req` parameter in the `postPrediction` function is the request object representing
+ * the HTTP request made to the server. It contains information about the request such as headers,
+ * body, parameters, and more. In this case, the function is expecting the request to have a body with
+ * `pictureName
+ * @param res - The `res` parameter in the `postPrediction` function is the response object that will
+ * be sent back to the client making the request. It is used to send a response back to the client with
+ * the prediction result obtained from the Python Flask server.
+ */
 const postPrediction = async (req, res) => {
 	try {
+		console.log('Prediction is running...');
 		const { pictureName, pictureUrl } = req.body;
 		// Send POST request to the Python Flask server
 		const apiResponse = await axios.post('http://localhost:5000/predict', {
 			imageUrl: pictureUrl,
 			imageName: pictureName,
 		});
-		console.log(apiResponse.data);
+		let mostFrequentClass;
+		if (apiResponse.data.detections.length != 0) {
+			// Step 1: Count occurrences of each class
+			const classCounts = apiResponse.data.detections.reduce(
+				(acc, detection) => {
+					const { class: detectedClass } = detection;
+					acc[detectedClass] = (acc[detectedClass] || 0) + 1;
+					return acc;
+				},
+				{}
+			);
+			// Step 2: Find the class with the highest count
+			mostFrequentClass = Object.keys(classCounts).reduce((a, b) =>
+				classCounts[a] > classCounts[b] ? a : b
+			);
+		}
 		// Output the prediction
-		res.status(200).json({ success: true, message: apiResponse.data });
+		res.status(200).json({
+			success: true,
+			image_url: apiResponse.data.image_url,
+			mostFrequentClass: mostFrequentClass,
+		});
 	} catch (error) {
 		console.error('Error calling Python API:', error);
 	}
 };
+/*
+return
+{
+  detections: [
+    { class: 'Thiếu -N', score: 0.9980423450469971 },
+    { class: 'Thiếu -N', score: 0.9979986548423767 },
+    { class: 'Thiếu -N', score: 0.9974007606506348 },
+    { class: 'Thiếu -N', score: 0.9972037076950073 },
+    { class: 'Thiếu -N', score: 0.995796799659729 },
+    { class: 'Thiếu -N', score: 0.9950481057167053 },
+    { class: 'Thiếu -N', score: 0.9949369430541992 },
+    { class: 'Thiếu -N', score: 0.9945588707923889 },
+    { class: 'Thiếu -N', score: 0.992865800857544 }
+  ],
+  image_url: 'https://storage.googleapis.com/project-1-c9d78.appspot.com/detect/26-10-2024-10-22-41.png'
+}
+*/
 
-// Controller to handle updating the water pump state
+/**
+ * The function `setCameraState` is an asynchronous function that updates the camera state based on the
+ * request body and sends back a response with the result or an error message.
+ * @param req - The `req` parameter in the `setCameraState` function typically represents the request
+ * object, which contains information about the HTTP request that triggered the function. This object
+ * includes properties such as headers, parameters, body, and more, depending on the type of request
+ * being made (e.g., GET,
+ * @param res - The `res` parameter in the `setCameraState` function is the response object that will
+ * be used to send a response back to the client making the request. It is typically used to set the
+ * status code and send data back to the client in the form of JSON or other formats.
+ */
 const setCameraState = async (req, res) => {
 	const { state } = req.body; // Expecting 'state' to be sent in the request body
 
@@ -537,6 +689,16 @@ const setCameraState = async (req, res) => {
 	}
 };
 
+/**
+ * The function `getHistory` asynchronously retrieves all sensor data and renders it in a history view,
+ * handling errors by logging them and returning a 500 status with the error message.
+ * @param req - The `req` parameter in the `getHistory` function typically represents the HTTP request
+ * object, which contains information about the incoming request from the client, such as headers,
+ * parameters, and body data. It is commonly used to access data sent by the client to the server.
+ * @param res - The `res` parameter in the `getHistory` function is the response object that will be
+ * used to send a response back to the client making the request. It is typically used to render a view
+ * or send data back in a specific format such as JSON.
+ */
 const getHistory = async (req, res) => {
 	try {
 		const result = await getAllSensorData();
